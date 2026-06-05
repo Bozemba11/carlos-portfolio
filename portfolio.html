@@ -143,6 +143,89 @@
     box-shadow: 0 8px 24px rgba(224,123,48,0.25);
     border-color: rgba(224,123,48,0.35);
   }
+  .system-panel {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .system-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(224,123,48,0.08), transparent 38%);
+    pointer-events: none;
+  }
+  .system-panel-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .system-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .system-info-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .system-info-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    min-width: 110px;
+  }
+  .system-info-value {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.6;
+    word-break: break-word;
+  }
+  .system-console {
+    background: rgba(0, 0, 0, 0.16);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 1.5rem;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .system-console-line {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--subtle);
+  }
+  .system-console-line span:first-child {
+    color: var(--accent);
+    min-width: 90px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .system-console-line span:last-child {
+    color: var(--text);
+  }
+  @media (max-width: 1024px) {
+    .system-panel { margin: 2rem 2rem 0; }
+    .system-panel-content { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .system-panel { padding: 1.5rem 1rem; }
+    .system-info-label { min-width: auto; }
+  }
   .icon-inline {
     display: inline-flex;
     vertical-align: middle;
@@ -1231,6 +1314,41 @@
   </div>
 </section>
 
+<section id="system">
+  <div class="section-label">System Info</div>
+  <h2 class="section-title">Browser & Device System</h2>
+  <p class="section-sub">This page detects your browser and device system data and displays it directly in the web interface.</p>
+  <div class="system-panel fade-up">
+    <div class="system-panel-content">
+      <div class="system-info">
+        <div class="system-info-item">
+          <div class="system-info-label">Platform</div>
+          <div id="system-platform" class="system-info-value">Loading...</div>
+        </div>
+        <div class="system-info-item">
+          <div class="system-info-label">User Agent</div>
+          <div id="system-useragent" class="system-info-value">Loading...</div>
+        </div>
+        <div class="system-info-item">
+          <div class="system-info-label">Language</div>
+          <div id="system-language" class="system-info-value">Loading...</div>
+        </div>
+        <div class="system-info-item">
+          <div class="system-info-label">Hardware</div>
+          <div id="system-hardware" class="system-info-value">Loading...</div>
+        </div>
+      </div>
+      <div class="system-console">
+        <div class="system-console-line"><span>OS</span><span id="system-os">Loading...</span></div>
+        <div class="system-console-line"><span>Browser</span><span id="system-browser">Loading...</span></div>
+        <div class="system-console-line"><span>Screen</span><span id="system-screen">Loading...</span></div>
+        <div class="system-console-line"><span>Cookies</span><span id="system-cookies">Loading...</span></div>
+        <div class="system-console-line"><span>Connection</span><span id="system-connection">Loading...</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── SERVICES ── -->
 <section id="services">
   <div class="section-label">What I Do</div>
@@ -1645,6 +1763,35 @@ Keep responses structured and practical. No jargon without explanation.
     document.querySelector('.nav-mobile').classList.toggle('active');
     document.querySelector('.nav-hamburger').classList.toggle('active');
   }
+  function renderSystemInfo() {
+    const ua = navigator.userAgent || 'Unknown';
+    const platform = navigator.userAgentData?.platform || navigator.platform || 'Unknown';
+    const language = navigator.language || navigator.userLanguage || 'Unknown';
+    const hardware = navigator.hardwareConcurrency ? navigator.hardwareConcurrency + ' cores' : 'Unknown';
+    const os = navigator.userAgentData?.platform || navigator.platform || 'Unknown';
+    const browser = (() => {
+      if (ua.includes('Firefox/')) return 'Firefox';
+      if (ua.includes('Edg/')) return 'Microsoft Edge';
+      if (ua.includes('Chrome/') && !ua.includes('Edg/')) return 'Chrome';
+      if (ua.includes('Safari/') && !ua.includes('Chrome/')) return 'Safari';
+      if (ua.includes('Opera/') || ua.includes('OPR/')) return 'Opera';
+      return 'Unknown';
+    })();
+    const screenInfo = `${window.screen.width}×${window.screen.height} (${window.devicePixelRatio || 1}x)`;
+    const cookies = navigator.cookieEnabled ? 'Enabled' : 'Disabled';
+    const connection = navigator.connection ? `${navigator.connection.effectiveType || 'N/A'} (${navigator.connection.downlink || 'N/A'} Mbps)` : 'Unknown';
+
+    document.getElementById('system-platform').textContent = platform;
+    document.getElementById('system-useragent').textContent = ua;
+    document.getElementById('system-language').textContent = language;
+    document.getElementById('system-hardware').textContent = hardware;
+    document.getElementById('system-os').textContent = os;
+    document.getElementById('system-browser').textContent = browser;
+    document.getElementById('system-screen').textContent = screenInfo;
+    document.getElementById('system-cookies').textContent = cookies;
+    document.getElementById('system-connection').textContent = connection;
+  }
+  window.addEventListener('load', renderSystemInfo);
   lucide.createIcons();
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
