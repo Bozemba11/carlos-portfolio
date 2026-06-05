@@ -962,6 +962,7 @@
     section { padding: 4rem 2rem; }
     .hero { grid-template-columns: 1fr; }
     .hero-right { display: none; }
+    .hero-left { padding: 4rem 2rem; }
     .services-grid { grid-template-columns: 1fr 1fr; }
     #network .project-featured { grid-template-columns: 1fr; }
     #network .project-featured-right { border-left: none; border-top: 1px solid var(--border); }
@@ -971,6 +972,91 @@
     .projects-grid { grid-template-columns: 1fr 1fr; }
     .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-cta { font-size: 11px; padding: 0.4rem 1rem; }
+    section { padding: 3rem 1.25rem; }
+    .hero-left { padding: 3rem 1.25rem; }
+    .hero-title { font-size: clamp(2rem, 7vw, 3rem); }
+    .hero-sub { font-size: 0.9rem; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-actions .btn-primary, .hero-actions .btn-ghost { text-align: center; justify-content: center; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .stat-num { font-size: 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 2rem 1.5rem; }
+    .project-featured-left { padding: 2rem 1.5rem; }
+    .project-featured-right { padding: 2rem 1.5rem; }
+    .project-title { font-size: 1.4rem; }
+    .project-stack { gap: 0.35rem; }
+    .stack-pill { font-size: 10px; padding: 0.25rem 0.6rem; }
+    .project-metrics { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; padding: 1rem 0; }
+    .metric-val { font-size: 1.2rem; }
+    .about-grid { gap: 2.5rem; }
+    .skill-name { min-width: 100px; font-size: 11px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .contact-wrap { gap: 2.5rem; }
+    .contact-link { padding: 1rem 1.25rem; }
+    .contact-link-label { font-size: 11px; }
+    .contact-link-val { font-size: 11px; }
+    .avail-box { padding: 1.5rem; }
+    footer { padding: 1.5rem 1.25rem; }
+    .code-body { font-size: 11px; padding: 1rem; }
+    .code-body pre { white-space: pre; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 0.8rem 1rem; }
+    .nav-logo { font-size: 11px; }
+    .nav-cta { font-size: 10px; padding: 0.35rem 0.75rem; }
+    section { padding: 2.5rem 1rem; }
+    .hero { min-height: auto; padding-top: 60px; }
+    .hero-left { padding: 2.5rem 1rem; }
+    .hero-tag { font-size: 10px; }
+    .hero-title { font-size: 1.8rem; }
+    .hero-sub { font-size: 0.85rem; line-height: 1.6; }
+    .hero-stats { flex-direction: column; gap: 1.25rem; border-top: none; padding-top: 0; margin-top: 2rem; }
+    .hero-stats > div { display: flex; align-items: center; gap: 0.75rem; }
+    .stat-num { font-size: 1.3rem; }
+    .stat-label { font-size: 10px; }
+    .section-title { font-size: 1.6rem; }
+    .section-sub { font-size: 0.9rem; margin-bottom: 2.5rem; }
+    .service-card { padding: 1.5rem 1rem; }
+    .service-name { font-size: 0.9rem; }
+    .service-desc { font-size: 0.8rem; }
+    .service-tags { gap: 0.3rem; }
+    .tag { font-size: 9px; padding: 0.15rem 0.5rem; }
+    .project-featured-left { padding: 1.5rem 1rem; }
+    .project-featured-right { padding: 1.5rem 1rem; }
+    .project-title { font-size: 1.2rem; }
+    .project-desc { font-size: 0.82rem; }
+    .step-name { font-size: 0.85rem; }
+    .step-desc { font-size: 0.78rem; }
+    .step-tech { font-size: 9px; }
+    .project-metrics { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .metric-val { font-size: 1.1rem; }
+    .metric-label { font-size: 9px; letter-spacing: 0.04em; }
+    .proj-card { padding: 1.5rem 1rem; }
+    .proj-num { font-size: 2rem; }
+    .proj-name { font-size: 0.95rem; }
+    .proj-desc { font-size: 0.78rem; }
+    .skill-name { min-width: 80px; font-size: 10px; }
+    .skill-cat-label { font-size: 10px; }
+    .approach-card { padding: 1rem; gap: 1rem; }
+    .approach-name { font-size: 0.82rem; }
+    .approach-desc { font-size: 0.75rem; }
+    .contact-link { padding: 0.85rem 1rem; flex-wrap: wrap; }
+    .contact-link-label { font-size: 10px; }
+    .contact-link-val { font-size: 10px; }
+    .avail-box { padding: 1.25rem; }
+    .avail-text { font-size: 0.82rem; }
+    footer { padding: 1.25rem 1rem; }
+    .footer-copy, .footer-made { font-size: 10px; }
+    .code-header { padding: 0.5rem 1rem; }
+    .code-body { font-size: 10px; padding: 0.75rem; line-height: 1.7; }
+    .code-body pre { overflow-x: auto; }
   }
 </style>
 </head>
