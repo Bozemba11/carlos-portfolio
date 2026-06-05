@@ -187,6 +187,75 @@
     transition: all 0.2s;
   }
   .nav-cta:hover { background: var(--accent); color: #fff; }
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 200;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--accent);
+    transition: all 0.3s ease;
+  }
+  .nav-hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .nav-hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+  .nav-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(8,8,8,0.98);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .nav-mobile.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .nav-mobile-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--subtle);
+    font-size: 24px;
+    transition: color 0.2s;
+  }
+  .nav-mobile-close:hover { color: var(--accent); }
+  .nav-mobile a {
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-mobile a:hover { color: var(--accent); }
 
   /* ── HERO ── */
   .hero {
@@ -959,6 +1028,8 @@
   @media (max-width: 1024px) {
     nav { padding: 1.25rem 2rem; }
     .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-cta { display: none; }
     section { padding: 4rem 2rem; }
     .hero { grid-template-columns: 1fr; }
     .hero-right { display: none; }
@@ -976,10 +1047,9 @@
 
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; }
-    .nav-cta { font-size: 11px; padding: 0.4rem 1rem; }
     section { padding: 3rem 1.25rem; }
-    .hero-left { padding: 3rem 1.25rem; }
-    .hero-title { font-size: clamp(2rem, 7vw, 3rem); }
+    .hero-left { padding: 2.5rem 1rem; }
+    .hero-title { font-size: clamp(1.8rem, 7vw, 2.5rem); }
     .hero-sub { font-size: 0.9rem; }
     .hero-actions { flex-direction: column; align-items: stretch; }
     .hero-actions .btn-primary, .hero-actions .btn-ghost { width: 100%; display: flex; justify-content: center; text-align: center; }
@@ -1010,12 +1080,11 @@
   @media (max-width: 480px) {
     nav { padding: 0.8rem 1rem; }
     .nav-logo { font-size: 11px; }
-    .nav-cta { font-size: 10px; padding: 0.35rem 0.75rem; }
     section { padding: 2.5rem 1rem; }
     .hero { min-height: auto; padding-top: 60px; }
-    .hero-left { padding: 2.5rem 1rem; }
+    .hero-left { padding: 2rem 1rem; }
     .hero-tag { font-size: 10px; }
-    .hero-title { font-size: 1.8rem; }
+    .hero-title { font-size: 1.6rem; }
     .hero-sub { font-size: 0.85rem; line-height: 1.6; }
     .hero-stats { flex-direction: column; gap: 1.25rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 2rem; }
     .hero-stats > div { display: flex; align-items: center; gap: 0.75rem; }
@@ -1075,7 +1144,22 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Hire Me →</a>
+  <div class="nav-hamburger" onclick="toggleMobileMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </nav>
+<div class="nav-mobile" onclick="closeMobileMenu()">
+  <div class="nav-mobile-close" onclick="closeMobileMenu()">✕</div>
+  <a href="#services" onclick="closeMobileMenu()">Services</a>
+  <a href="#network" onclick="closeMobileMenu()">Network</a>
+  <a href="#project" onclick="closeMobileMenu()">Project</a>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="#contact" class="nav-cta" style="margin-top: 1rem;" onclick="closeMobileMenu()">Hire Me →</a>
+</div>
 
 <!-- ── HERO ── -->
 <section class="hero" id="home">
@@ -1596,6 +1680,14 @@ Keep responses structured and practical. No jargon without explanation.
   <div class="footer-copy">© 2026 Portfolio. All rights reserved.</div>
   <div class="footer-made">Built with <span>intention</span> · Network Engineering × IT × Strategy × AI</div>
 </footer>  <script>
+  function closeMobileMenu() {
+    document.querySelector('.nav-mobile').classList.remove('active');
+    document.querySelector('.nav-hamburger').classList.remove('active');
+  }
+  function toggleMobileMenu() {
+    document.querySelector('.nav-mobile').classList.toggle('active');
+    document.querySelector('.nav-hamburger').classList.toggle('active');
+  }
   lucide.createIcons();
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
