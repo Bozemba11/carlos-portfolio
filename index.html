@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Network Engineering · IT Support · AI Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: rgba(255,255,255,0.07);
+    --accent: #E07B30;
+    --accent2: #c96820;
+    --text: #F0EDE6;
+    --muted: #666660;
+    --subtle: #999990;
+    --green: #3DCC85;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    background: rgba(8,8,8,0.85);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── 3D ICON STYLING ── */
+  .icon-3d {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: all 0.25s ease;
+    color: var(--accent);
+  }
+  .icon-3d:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(224,123,48,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+    border-color: rgba(224,123,48,0.3);
+  }
+  .icon-3d svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.5;
+  }
+  .icon-3d-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+    transition: all 0.2s ease;
+    color: var(--accent);
+  }
+  .icon-3d-sm svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.5;
+  }
+  .icon-3d-sm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(224,123,48,0.15);
+    border-color: rgba(224,123,48,0.25);
+  }
+  .icon-3d-lg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: all 0.25s ease;
+    color: var(--accent);
+  }
+  .icon-3d-lg svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.5;
+  }
+  .icon-3d-lg:hover {
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 8px 24px rgba(224,123,48,0.25);
+    border-color: rgba(224,123,48,0.35);
+  }
+  .icon-inline {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    margin-right: 2px;
+  }
+  .icon-inline svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.5;
+  }
+  .stat-icon-3d {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    color: var(--accent);
+    transition: all 0.25s ease;
+    margin-bottom: 14px;
+  }
+  .stat-icon-3d svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+  }
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.5rem 1.25rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,123,48,0.07) 0%, transparent 70%);
+    top: 10%; left: -10%;
+    pointer-events: none;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem 5rem 4rem;
+    position: relative;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--subtle);
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn-ghost {
+    color: var(--subtle);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--subtle); color: var(--text); }
+  .hero-stats {
+    display: flex; gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-visual {
+    width: 100%; height: 100%;
+    background: var(--surface);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+  }
+  .hero-card-float {
+    position: relative;
+    z-index: 2;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    width: 340px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .hero-card-float .card-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .terminal-line {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--subtle);
+    margin-bottom: 0.4rem;
+    display: flex; gap: 0.5rem;
+  }
+  .terminal-line .prompt { color: var(--green); }
+  .terminal-line .cmd { color: var(--text); }
+  .terminal-line .out { color: var(--muted); font-style: italic; }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(61,204,133,0.1);
+    border: 1px solid rgba(61,204,133,0.25);
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.75rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+  .status-pill::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    color: var(--subtle);
+    max-width: 600px;
+    margin-bottom: 4rem;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ── SERVICES ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--bg);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: background 0.3s;
+    overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .service-card:hover { background: var(--surface); }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-icon {
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 18px;
+  }
+  .service-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.5;
+    color: var(--accent);
+  }
+  .service-name {
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .service-desc {
+    font-size: 0.875rem;
+    color: var(--subtle);
+    line-height: 1.7;
+  }
+  .service-tags {
+    margin-top: 1.5rem;
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+  }
+
+  /* ── FEATURED PROJECT ── */
+  .project-featured {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .project-featured-left {
+    padding: 3.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .project-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(224,123,48,0.1);
+    border: 1px solid rgba(224,123,48,0.3);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.75rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .project-title {
+    font-family: var(--display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .project-desc {
+    color: var(--subtle);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .project-stack {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .stack-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    border: 1px solid rgba(224,123,48,0.3);
+    padding: 0.3rem 0.75rem;
+    text-transform: uppercase;
+  }
+  .project-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .metric { text-align: center; }
+  .metric-val {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .metric-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .project-featured-right {
+    background: var(--surface2);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-featured-right::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,123,48,0.06) 0%, transparent 70%);
+    top: -50px; right: -80px;
+  }
+  .steps-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .step-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .step-num {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: rgba(224,123,48,0.2);
+    min-width: 2rem;
+    line-height: 1;
+  }
+  .step-content {}
+  .step-name {
+    font-family: var(--display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .step-desc {
+    font-size: 0.82rem;
+    color: var(--subtle);
+    line-height: 1.6;
+  }
+  .step-tech {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    margin-top: 0.4rem;
+    opacity: 0.8;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .code-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .dot-red { background: #FF5F57; }
+  .dot-yellow { background: #FEBC2E; }
+  .dot-green { background: #28C840; }
+  .code-body {
+    padding: 1.5rem;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+  .code-body .kw { color: #E07B30; }
+  .code-body .fn { color: #7ECDC2; }
+  .code-body .st { color: #98C379; }
+  .code-body .cm { color: #555; font-style: italic; }
+  .code-body .num { color: #D19A66; }
+  .code-body .var { color: #C678DD; }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .about-text { color: var(--subtle); font-size: 1rem; line-height: 1.9; }
+  .about-text p + p { margin-top: 1.25rem; }
+  .about-text strong { color: var(--text); font-weight: 500; }
+  .approach-cards {
+    display: flex; flex-direction: column; gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  .approach-card {
+    display: flex; gap: 1.25rem; align-items: flex-start;
+    background: var(--bg);
+    padding: 1.25rem 1.5rem;
+    transition: background 0.2s;
+  }
+  .approach-card:hover { background: var(--surface); }
+  .approach-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    margin-top: 2px;
+    color: var(--accent);
+  }
+  .approach-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.5;
+  }
+  .approach-name {
+    font-family: var(--display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .approach-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .about-right {}
+  .skills-section { }
+  .skill-category {
+    margin-bottom: 2.5rem;
+  }
+  .skill-cat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-bars { display: flex; flex-direction: column; gap: 0.75rem; }
+  .skill-row {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .skill-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--subtle);
+    min-width: 160px;
+  }
+  .skill-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    animation: grow 1.5s ease-out forwards;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  @keyframes grow { to { transform: scaleX(1); } }
+  .skill-pct {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    min-width: 30px;
+    text-align: right;
+  }
+
+  /* ── PROJECTS GRID ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .proj-card {
+    background: var(--bg);
+    padding: 2rem;
+    position: relative;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .proj-card:hover { background: var(--surface); }
+  .proj-num {
+    font-family: var(--display);
+    font-size: 3rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.04);
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    line-height: 1;
+  }
+  .proj-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .proj-status.active { color: var(--green); }
+  .proj-status.wip { color: var(--accent); }
+  .proj-status.planned { color: var(--muted); }
+  .proj-name {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    line-height: 1.25;
+  }
+  .proj-desc {
+    font-size: 0.83rem;
+    color: var(--subtle);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .proj-tech {
+    display: flex; flex-wrap: wrap; gap: 0.35rem;
+  }
+  .proj-tech span {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .tl-item {
+    position: relative;
+    padding: 0 0 3rem 2.5rem;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -4.5px; top: 4px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .tl-title {
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .tl-desc {
+    font-size: 0.875rem;
+    color: var(--subtle);
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 1px; margin-top: 2rem; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    background: var(--surface);
+    margin-bottom: 1px;
+  }
+  .contact-link:hover {
+    background: var(--surface2);
+    border-color: rgba(224,123,48,0.3);
+  }
+  .contact-link-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .contact-link-val {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .contact-link-arrow {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .avail-box {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: var(--surface);
+    margin-top: 2rem;
+  }
+  .avail-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .avail-head::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .avail-text {
+    font-size: 0.9rem;
+    color: var(--subtle);
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .footer-made {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .footer-made span { color: var(--accent); }
+
+  /* ── FADE-IN ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+
+  @media (max-width: 1024px) {
+    nav { padding: 1.25rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 2rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 4rem 2rem; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    #network .project-featured { grid-template-columns: 1fr; }
+    #network .project-featured-right { border-left: none; border-top: 1px solid var(--border); }
+    .project-featured { grid-template-columns: 1fr; }
+    .project-featured-right { border-left: none; border-top: 1px solid var(--border); }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+    .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-cta { font-size: 11px; padding: 0.4rem 1rem; }
+    section { padding: 3rem 1.25rem; }
+    .hero-left { padding: 3rem 1.25rem; }
+    .hero-title { font-size: clamp(2rem, 7vw, 3rem); }
+    .hero-sub { font-size: 0.9rem; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-actions .btn-primary, .hero-actions .btn-ghost { width: 100%; display: flex; justify-content: center; text-align: center; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .stat-num { font-size: 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 2rem 1.5rem; }
+    .project-featured-left { padding: 2rem 1.5rem; }
+    .project-featured-right { padding: 2rem 1.5rem; }
+    .project-title { font-size: 1.4rem; }
+    .project-stack { gap: 0.35rem; }
+    .stack-pill { font-size: 10px; padding: 0.25rem 0.6rem; }
+    .project-metrics { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; padding: 1rem 0; }
+    .metric-val { font-size: 1.2rem; }
+    .about-grid { gap: 2.5rem; }
+    .skill-name { min-width: 100px; font-size: 11px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .contact-wrap { gap: 2.5rem; }
+    .contact-link { padding: 1rem 1.25rem; }
+    .contact-link-label { font-size: 11px; }
+    .contact-link-val { font-size: 11px; }
+    .avail-box { padding: 1.5rem; }
+    footer { padding: 1.5rem 1.25rem; }
+    .code-body { font-size: 11px; padding: 1rem; }
+    .code-body pre { white-space: pre; overflow-x: auto; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 0.8rem 1rem; }
+    .nav-logo { font-size: 11px; }
+    .nav-cta { font-size: 10px; padding: 0.35rem 0.75rem; }
+    section { padding: 2.5rem 1rem; }
+    .hero { min-height: auto; padding-top: 60px; }
+    .hero-left { padding: 2.5rem 1rem; }
+    .hero-tag { font-size: 10px; }
+    .hero-title { font-size: 1.8rem; }
+    .hero-sub { font-size: 0.85rem; line-height: 1.6; }
+    .hero-stats { flex-direction: column; gap: 1.25rem; border-top: 1px solid var(--border); padding-top: 1.5rem; margin-top: 2rem; }
+    .hero-stats > div { display: flex; align-items: center; gap: 0.75rem; }
+    .stat-num { font-size: 1.3rem; }
+    .stat-label { font-size: 10px; }
+    .section-title { font-size: 1.6rem; }
+    .section-sub { font-size: 0.9rem; margin-bottom: 2.5rem; }
+    .service-card { padding: 1.5rem 1rem; }
+    .service-name { font-size: 0.9rem; }
+    .service-desc { font-size: 0.8rem; }
+    .service-tags { gap: 0.3rem; }
+    .tag { font-size: 9px; padding: 0.15rem 0.5rem; min-height: 24px; display: inline-flex; align-items: center; }
+    .project-featured-left { padding: 1.5rem 1rem; }
+    .project-featured-right { padding: 1.5rem 1rem; }
+    .project-title { font-size: 1.2rem; }
+    .project-desc { font-size: 0.82rem; }
+    .step-name { font-size: 0.85rem; }
+    .step-desc { font-size: 0.78rem; }
+    .step-tech { font-size: 9px; }
+    .project-metrics { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .metric-val { font-size: 1.1rem; }
+    .metric-label { font-size: 9px; letter-spacing: 0.04em; }
+    .proj-card { padding: 1.5rem 1rem; }
+    .proj-num { font-size: 2rem; }
+    .proj-name { font-size: 0.95rem; }
+    .proj-desc { font-size: 0.78rem; }
+    .skill-name { min-width: 80px; font-size: 10px; }
+    .skill-cat-label { font-size: 10px; }
+    .approach-card { padding: 1rem; gap: 1rem; }
+    .approach-name { font-size: 0.82rem; }
+    .approach-desc { font-size: 0.75rem; }
+    .contact-link { padding: 0.85rem 1rem; flex-wrap: wrap; gap: 0.25rem; }
+    .contact-link-label { font-size: 10px; flex: 0 0 100%; }
+    .contact-link-val { font-size: 10px; flex: 1; }
+    .contact-link-arrow { flex: 0 0 auto; }
+    .avail-box { padding: 1.25rem; }
+    .avail-text { font-size: 0.82rem; }
+    footer { padding: 1.25rem 1rem; }
+    .footer-copy, .footer-made { font-size: 10px; }
+    .code-header { padding: 0.5rem 1rem; }
+    .code-body { font-size: 10px; padding: 0.75rem; line-height: 1.7; }
+    .code-body pre { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">[ Portfolio.v1 ]</div>
+  <ul class="nav-links">
+    <li><a    href="#services">Services</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="hero-tag">Carlos Peter</div>
+    <h1 class="hero-title">
+      Network Engineer<br>
+      IT Support Specialist<br>
+      <em>AI Solutions Developer</em>
+    </h1>
+    <p class="hero-sub">
+      "Building reliable networks, solving complex IT problems, and creating practical AI-powered solutions."
+    </p>
+    <p class="hero-sub" style="max-width: 520px; font-size: 0.95rem;">
+      Most professionals specialize in one area. I work across networking, systems administration, IT support, and AI-powered automation to help organizations operate more efficiently. From configuring secure network infrastructure to developing intelligent troubleshooting tools, I focus on solutions that are practical, scalable, and easy to maintain.
+    </p>
+    <div class="hero-actions">
+      <a href="#project" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-ghost">Contact Me</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">02+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Clients & Organizations Supported</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-card-float">
+        <div class="card-label">// AI Troubleshooter — Live</div>
+        <div class="terminal-line">
+          <span class="prompt">$</span>
+          <span class="cmd">diagnose --system linux --issue "high cpu"</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Scanning processes...</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Querying AI engine...</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Root cause: kworker/0:1</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Fix: sudo systemctl restart...</span>
+        </div>
+        <div class="status-pill">System Resolved</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="section-label">What I Do</div>
+  <h2 class="section-title">Specialized Solutions Across Domains</h2>
+  <p class="section-sub">Most professionals specialize in one area. I work across networking, systems administration, IT support, and AI-powered automation to help organizations operate more efficiently.</p>
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-icon"><i data-lucide="network"></i></div>
+      <div class="service-name">Network Engineering & Infrastructure</div>
+      <div class="service-desc">Design, configure, and maintain reliable network infrastructures that support business operations. Experience includes VLAN implementation, routing, switching, DHCP/DNS services, firewall configuration, VPN deployment, and network troubleshooting.</div>
+      <div class="service-tags">
+        <span class="tag">Cisco</span>
+        <span class="tag">MikroTik</span>
+        <span class="tag">VLANs</span>
+        <span class="tag">VPNs</span>
+        <span class="tag">Firewalls</span>
+      </div>
+    </div>
+    <div class="service-card fade-up delay-1">
+      <div class="service-icon"><i data-lucide="monitor"></i></div>
+      <div class="service-name">IT Support & Systems Administration</div>
+      <div class="service-desc">Diagnosing and resolving technical issues across Windows, Linux, virtualized environments, and ERP systems. Focused on minimizing downtime and improving system reliability.</div>
+      <div class="service-tags">
+        <span class="tag">Windows</span>
+        <span class="tag">Linux</span>
+        <span class="tag">VirtualBox</span>
+        <span class="tag">Odoo ERP</span>
+      </div>
+    </div>
+    <div class="service-card fade-up delay-2">
+      <div class="service-icon"><i data-lucide="bot"></i></div>
+      <div class="service-name">AI-Powered Automation</div>
+      <div class="service-desc">Building practical AI-assisted tools that streamline repetitive processes, improve troubleshooting workflows, and enhance decision-making.</div>
+      <div class="service-tags">
+        <span class="tag">Prompt Engineering</span>
+        <span class="tag">APIs</span>
+        <span class="tag">Workflow Automation</span>
+      </div>
+    </div>
+    <div class="service-card fade-up delay-3">
+      <div class="service-icon"><i data-lucide="settings-2"></i></div>
+      <div class="service-name">Systems Integration</div>
+      <div class="service-desc">Connecting applications, databases, and services through APIs and lightweight automation solutions to reduce manual work and improve efficiency.</div>
+      <div class="service-tags">
+        <span class="tag">Python</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">REST APIs</span>
+        <span class="tag">Databases</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NETWORK ENGINEERING ── -->
+<section id="network">
+  <div class="section-label">Network Engineering</div>
+  <h2 class="section-title">Designing Secure and Scalable Networks</h2>
+  <p class="section-sub">Networks are the foundation of modern organizations. I design, deploy, and maintain network solutions that prioritize performance, reliability, and security.</p>
+
+  <div class="project-featured fade-up">
+    <div class="project-featured-left">
+      <div class="project-badge"><i data-lucide="network" style="width:12px;height:12px;stroke-width:1.5;"></i> Core Competencies</div>
+      <h3 class="project-title">Routing · Switching ·<br>Security · Wireless</h3>
+      <p class="project-desc">
+        My experience includes: VLAN design and segmentation, inter-VLAN routing, router and switch configuration, firewall implementation, DHCP and DNS deployment, VPN configuration, wireless network deployment, and network monitoring and troubleshooting.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">Cisco IOS</span>
+        <span class="stack-pill">MikroTik RouterOS</span>
+        <span class="stack-pill">Linux Networking</span>
+        <span class="stack-pill">DHCP & DNS Services</span>
+        <span class="stack-pill">Firewall & NAT Configuration</span>
+        <span class="stack-pill">VPN Technologies</span>
+        <span class="stack-pill">Wireshark & Network Diagnostics</span>
+      </div>
+      <div class="project-metrics">
+        <div class="metric">
+          <span class="metric-val">10+</span>
+          <span class="metric-label">Networks Configured</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">5</span>
+          <span class="metric-label">Sites Designed</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">99.9%</span>
+          <span class="metric-label">Uptime Target</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-featured-right">
+      <div class="steps-title">// Core Technologies</div>
+
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-name">VLAN Design & Segmentation</div>
+          <div class="step-desc">Analyze traffic patterns, design VLAN topology, assign subnets, and configure inter-VLAN routing with access control lists between segments.</div>
+          <div class="step-tech">→ Cisco · MikroTik · Subnetting · VLSM</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-name">Router & Switch Configuration</div>
+          <div class="step-desc">Set up static/dynamic routing, NAT/PAT, port forwarding, firewall rules, and site-to-site VPNs. Hardening against common attack vectors included.</div>
+          <div class="step-tech">→ RouterOS · iptables · IPSec · WireGuard</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-name">DHCP & DNS Services</div>
+          <div class="step-desc">Deploy and manage DHCP servers (failover pools, reservations), DNS forwarders and caching resolvers, and NTP synchronization across the network.</div>
+          <div class="step-tech">→ Linux · dnsmasq · bind9 · dhcpd</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-name">Firewall & NAT Configuration</div>
+          <div class="step-desc">Implement firewall rules, NAT/PAT translation, and VPN tunnels to secure network perimeter and enable remote access.</div>
+          <div class="step-tech">→ Cisco IOS · MikroTik · iptables</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-name">Network Monitoring & Troubleshooting</div>
+          <div class="step-desc">Identify root causes of network drops, high latency, packet loss, and bandwidth saturation using Wireshark, ping, traceroute, and interface statistics.</div>
+          <div class="step-tech">→ Wireshark · MTR · SNMP · syslog</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURED PROJECT ── -->
+<section id="project" style="padding-top: 0;">
+  <div class="section-label">Featured Build</div>
+  <h2 class="section-title">AI-Powered IT Troubleshooting Assistant</h2>
+  <p class="section-sub">An intelligent troubleshooting platform designed to help users diagnose common IT issues quickly and accurately.</p>
+
+  <div class="project-featured fade-up">
+    <div class="project-featured-left">
+      <div class="project-badge"><i data-lucide="zap" style="width:12px;height:12px;stroke-width:1.5;"></i> Live Project · 2026</div>
+      <h3 class="project-title">AI-Powered IT Troubleshooting Assistant</h3>
+      <p class="project-desc">
+        Users describe a technical problem in plain language, and the system generates likely root causes, severity assessment, recommended troubleshooting steps, required tools and commands, and preventive recommendations.
+      </p>
+      <p class="project-desc">
+        The goal is to reduce troubleshooting time and improve access to technical knowledge for IT teams and end users.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">Flask</span>
+        <span class="stack-pill">Claude API</span>
+        <span class="stack-pill">HTML/CSS/JS</span>
+        <span class="stack-pill">SQLite (Planned)</span>
+        <span class="stack-pill">Render Deployment</span>
+      </div>
+      <div class="project-metrics">
+        <div class="metric">
+          <span class="metric-val">&lt;30s</span>
+          <span class="metric-label">Avg. Response</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">~50</span>
+          <span class="metric-label">Issues Catalogued</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">100%</span>
+          <span class="metric-label">Free to Deploy</span>
+        </div>
+      </div>
+      <div style="display:flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="#code" class="btn-primary">View Code Sample ↓</a>
+        <a href="#roadmap" class="btn-ghost">See Roadmap</a>
+      </div>
+    </div>
+    <div class="project-featured-right">
+      <div class="steps-title">// Planned Enhancements</div>
+
+      <div class="step-item">
+        <div class="step-num">V2</div>
+        <div class="step-content">
+          <div class="step-name">Version 2</div>
+          <div class="step-desc">Issue history, search functionality, user authentication, analytics dashboard.</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">V3</div>
+        <div class="step-content">
+          <div class="step-name">Version 3</div>
+          <div class="step-desc">IoT diagnostics, system information collection, multi-device support.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODE SAMPLE -->
+  <div class="code-section fade-up" id="code">
+    <div class="code-header">
+      <div class="code-dots">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="code-title">app.py — Flask Backend (Core Logic)</div>
+      <div style="font-family: var(--mono); font-size: 10px; color: var(--muted);">Python 3.x</div>
+    </div>
+    <div class="code-body">
+<pre><span class="cm"># app.py — AI IT Troubleshooting Assistant</span>
+<span class="cm"># Step 1: Install deps → pip install flask anthropic python-dotenv</span>
+
+<span class="kw">import</span> anthropic
+<span class="kw">from</span> flask <span class="kw">import</span> Flask, request, jsonify
+<span class="kw">from</span> dotenv <span class="kw">import</span> load_dotenv
+<span class="kw">import</span> os
+
+load_dotenv()                         <span class="cm"># Load ANTHROPIC_API_KEY from .env</span>
+app = Flask(__name__)
+client = anthropic.<span class="fn">Anthropic</span>()       <span class="cm"># Auto-reads ANTHROPIC_API_KEY</span>
+
+<span class="cm"># The "brain" — system prompt defines how the AI behaves</span>
+SYSTEM_PROMPT = <span class="st">"""
+You are a senior IT systems engineer with 10+ years of experience.
+When given an IT problem, respond with:
+1. ROOT CAUSE: What is most likely causing this
+2. SEVERITY: Low / Medium / High
+3. STEPS: Numbered list of diagnostic/fix steps (clear, beginner-friendly)
+4. TOOLS NEEDED: Any commands, software, or access required
+5. PREVENTION: How to avoid this in future
+Keep responses structured and practical. No jargon without explanation.
+"""</span>
+
+<span class="kw">@</span>app.<span class="fn">route</span>(<span class="st">'/diagnose'</span>, methods=[<span class="st">'POST'</span>])
+<span class="kw">def</span> <span class="fn">diagnose</span>():
+    data = request.<span class="fn">get_json</span>()
+    issue = data.<span class="fn">get</span>(<span class="st">'issue'</span>, <span class="st">''</span>)
+
+    <span class="kw">if not</span> issue:
+        <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="st">'error'</span>: <span class="st">'No issue provided'</span>}), <span class="num">400</span>
+
+    <span class="cm"># Call Claude — this is the key step</span>
+    message = client.messages.<span class="fn">create</span>(
+        model=<span class="st">"claude-opus-4-6"</span>,
+        max_tokens=<span class="num">1024</span>,
+        system=SYSTEM_PROMPT,
+        messages=[{
+            <span class="st">"role"</span>: <span class="st">"user"</span>,
+            <span class="st">"content"</span>: <span class="fn">f</span><span class="st">"IT Problem: {issue}"</span>
+        }]
+    )
+
+    <span class="kw">return</span> <span class="fn">jsonify</span>({
+        <span class="st">'issue'</span>: issue,
+        <span class="st">'diagnosis'</span>: message.content[<span class="num">0</span>].text,
+        <span class="st">'model'</span>: message.model,
+        <span class="st">'tokens_used'</span>: message.usage.input_tokens + message.usage.output_tokens
+    })
+
+<span class="kw">if</span> __name__ == <span class="st">'__main__'</span>:
+    app.<span class="fn">run</span>(debug=<span class="kw">True</span>)     <span class="cm"># Visit http://localhost:5000</span></pre>
+    </div>
+  </div>
+
+  <!-- UPGRADE ROADMAP -->
+  <div style="margin-top: 3rem;" id="roadmap">
+    <div class="section-label" style="margin-bottom: 1.5rem;">Upgrade Path</div>
+    <div class="projects-grid">
+      <div class="proj-card fade-up">
+        <div class="proj-num">v1</div>
+        <div class="proj-status active"><i data-lucide="check-circle-2" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Base Version</div>
+        <div class="proj-name">Core AI Diagnostic Engine</div>
+        <div class="proj-desc">Basic Flask API + Claude + HTML frontend. User types a problem, gets structured fix steps.</div>
+        <div class="proj-tech">
+          <span>Python</span><span>Flask</span><span>Claude API</span><span>HTML</span>
+        </div>
+      </div>
+      <div class="proj-card fade-up delay-1">
+        <div class="proj-num">v2</div>
+        <div class="proj-status wip"><i data-lucide="arrow-right" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Next Build</div>
+        <div class="proj-name">Issue History + Search</div>
+        <div class="proj-desc">Store all diagnosed issues in a SQLite database. Add search and filter by OS type, category, or severity.</div>
+        <div class="proj-tech">
+          <span>SQLite</span><span>SQLAlchemy</span><span>Search UI</span>
+        </div>
+      </div>
+      <div class="proj-card fade-up delay-2">
+        <div class="proj-num">v3</div>
+        <div class="proj-status planned"><i data-lucide="circle" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Future</div>
+        <div class="proj-name">Multi-System + IoT Support</div>
+        <div class="proj-desc">Add support for IoT device errors (Raspberry Pi, ESP32). Include a system info auto-detector that pre-fills context.</div>
+        <div class="proj-tech">
+          <span>IoT</span><span>psutil</span><span>Raspberry Pi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-label">About Me</div>
+      <h2 class="section-title">Carlos Peter</h2>
+      <div class="about-text">
+        <p>
+          I am a Network Engineer and IT professional with experience in networking, systems administration, ERP support, and emerging AI technologies.
+        </p>
+        <p>
+          My background includes configuring Cisco and MikroTik networks, administering Windows and Linux systems, supporting ERP environments, and developing automation tools that improve operational efficiency.
+        </p>
+        <p>
+          I enjoy solving technical problems, documenting solutions, and designing systems that are reliable, maintainable, and scalable.
+        </p>
+      </div>
+      <div class="approach-cards">
+        <div class="approach-card">
+          <div class="approach-icon"><i data-lucide="target"></i></div>
+          <div>
+            <div class="approach-name">Diagnose Before Building</div>
+            <div class="approach-desc">Understand the real cause of a problem before implementing a solution.</div>
+          </div>
+        </div>
+        <div class="approach-card">
+          <div class="approach-icon"><i data-lucide="link-2"></i></div>
+          <div>
+            <div class="approach-name">Design for Reliability</div>
+            <div class="approach-desc">Build systems that remain stable and manageable over time.</div>
+          </div>
+        </div>
+        <div class="approach-card">
+          <div class="approach-icon"><i data-lucide="file-text"></i></div>
+          <div>
+            <div class="approach-name">Document Everything</div>
+            <div class="approach-desc">Well-documented systems are easier to support, improve, and scale.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="skills">
+      <div class="section-label" style="margin-bottom: 2rem;">Technical Skills</div>
+      <div class="skills-section">
+
+        <div class="skill-category fade-up">
+          <div class="skill-cat-label">Networking</div>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">Cisco IOS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">MikroTik RouterOS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">VLAN Configuration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Routing & Switching</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">DHCP & DNS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">VPN Technologies</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Firewall Administration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Network Troubleshooting</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-category fade-up delay-1">
+          <div class="skill-cat-label">Systems Administration</div>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">Windows Administration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Linux Administration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Virtualization (VirtualBox)</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">System Monitoring</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">User Management</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-category fade-up delay-2">
+          <div class="skill-cat-label">Development & Automation</div>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">Python</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Flask</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">HTML / CSS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">JavaScript</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">REST APIs</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">SQLite</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-category fade-up delay-3">
+          <div class="skill-cat-label">AI & Productivity</div>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">Prompt Engineering</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+            <div class="skill-row"><span class="skill-name">AI Workflow Automation</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+            <div class="skill-row"><span class="skill-name">AI-Assisted Troubleshooting</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+            <div class="skill-row"><span class="skill-name">API Integration</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact" style="background: var(--surface); border-top: 1px solid var(--border);">
+  <div class="contact-wrap">
+    <div>
+      <div class="section-label">Let's Work Together</div>
+      <h2 class="section-title">Let's Discuss Your Project</h2>
+      <p class="section-sub">Whether you need assistance with network infrastructure, IT support, systems integration, or AI-powered solutions, I'd be happy to discuss your project.</p>
+
+      <div class="avail-box">
+        <div class="avail-head">Open for Work</div>
+        <p class="avail-text">
+          Available for network infrastructure, IT support, systems integration, and AI-powered solutions.
+          Remote-first, worldwide.
+          Typical first response within 24 hours.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div class="section-label" style="margin-bottom: 2rem;">Contact Information</div>
+      <div class="contact-links">
+        <a href="tel:0677667059" class="contact-link">
+          <span class="contact-link-label">Phone</span>
+          <span class="contact-link-val">0677 667 059</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="mailto:petercarlos897@gmail.com" class="contact-link">
+          <span class="contact-link-label">Email</span>
+          <span class="contact-link-val">petercarlos897@gmail.com</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="https://github.com/yourhandle" target="_blank" class="contact-link">
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-val">github.com/yourhandle</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="https://linkedin.com/in/yourhandle" target="_blank" class="contact-link">
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-val">linkedin.com/in/yourhandle</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-label">Location</span>
+          <span class="contact-link-val">Dar es Salaam, Tanzania</span>
+          <span class="contact-link-arrow">✓</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-copy">© 2026 Portfolio. All rights reserved.</div>
+  <div class="footer-made">Built with <span>intention</span> · Network Engineering × IT × Strategy × AI</div>
+</footer>  <script>
+  lucide.createIcons();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
