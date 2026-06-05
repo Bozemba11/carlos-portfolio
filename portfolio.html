@@ -1410,8 +1410,8 @@
         <span class="stack-pill">Render Deployment</span>
       </div>
       <div style="display:flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
-        <a href="#code" class="btn-primary">View Code Sample ↓</a>
-        <a href="#roadmap" class="btn-ghost">See Roadmap</a>
+        <a href="#roadmap" class="btn-primary">View roadmap</a>
+        <a href="#contact" class="btn-ghost">Contact me</a>
       </div>
     </div>
     <div class="project-featured-right">
@@ -1432,73 +1432,6 @@
           <div class="step-desc">IoT diagnostics, system information collection, multi-device support.</div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- CODE SAMPLE -->
-  <div class="code-section fade-up" id="code">
-    <div class="code-header">
-      <div class="code-dots">
-        <div class="dot dot-red"></div>
-        <div class="dot dot-yellow"></div>
-        <div class="dot dot-green"></div>
-      </div>
-      <div class="code-title">app.py — Flask Backend (Core Logic)</div>
-      <div style="font-family: var(--mono); font-size: 10px; color: var(--muted);">Python 3.x</div>
-    </div>
-    <div class="code-body">
-<pre><span class="cm"># app.py — AI IT Troubleshooting Assistant</span>
-<span class="cm"># Step 1: Install deps → pip install flask anthropic python-dotenv</span>
-
-<span class="kw">import</span> anthropic
-<span class="kw">from</span> flask <span class="kw">import</span> Flask, request, jsonify
-<span class="kw">from</span> dotenv <span class="kw">import</span> load_dotenv
-<span class="kw">import</span> os
-
-load_dotenv()                         <span class="cm"># Load ANTHROPIC_API_KEY from .env</span>
-app = Flask(__name__)
-client = anthropic.<span class="fn">Anthropic</span>()       <span class="cm"># Auto-reads ANTHROPIC_API_KEY</span>
-
-<span class="cm"># The "brain" — system prompt defines how the AI behaves</span>
-SYSTEM_PROMPT = <span class="st">"""
-You are a senior IT systems engineer with 10+ years of experience.
-When given an IT problem, respond with:
-1. ROOT CAUSE: What is most likely causing this
-2. SEVERITY: Low / Medium / High
-3. STEPS: Numbered list of diagnostic/fix steps (clear, beginner-friendly)
-4. TOOLS NEEDED: Any commands, software, or access required
-5. PREVENTION: How to avoid this in future
-Keep responses structured and practical. No jargon without explanation.
-"""</span>
-
-<span class="kw">@</span>app.<span class="fn">route</span>(<span class="st">'/diagnose'</span>, methods=[<span class="st">'POST'</span>])
-<span class="kw">def</span> <span class="fn">diagnose</span>():
-    data = request.<span class="fn">get_json</span>()
-    issue = data.<span class="fn">get</span>(<span class="st">'issue'</span>, <span class="st">''</span>)
-
-    <span class="kw">if not</span> issue:
-        <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="st">'error'</span>: <span class="st">'No issue provided'</span>}), <span class="num">400</span>
-
-    <span class="cm"># Call Claude — this is the key step</span>
-    message = client.messages.<span class="fn">create</span>(
-        model=<span class="st">"claude-opus-4-6"</span>,
-        max_tokens=<span class="num">1024</span>,
-        system=SYSTEM_PROMPT,
-        messages=[{
-            <span class="st">"role"</span>: <span class="st">"user"</span>,
-            <span class="st">"content"</span>: <span class="fn">f</span><span class="st">"IT Problem: {issue}"</span>
-        }]
-    )
-
-    <span class="kw">return</span> <span class="fn">jsonify</span>({
-        <span class="st">'issue'</span>: issue,
-        <span class="st">'diagnosis'</span>: message.content[<span class="num">0</span>].text,
-        <span class="st">'model'</span>: message.model,
-        <span class="st">'tokens_used'</span>: message.usage.input_tokens + message.usage.output_tokens
-    })
-
-<span class="kw">if</span> __name__ == <span class="st">'__main__'</span>:
-    app.<span class="fn">run</span>(debug=<span class="kw">True</span>)     <span class="cm"># Visit http://localhost:5000</span></pre>
     </div>
   </div>
 
