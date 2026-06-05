@@ -3,10 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // ── THEME: prevent flash ──
+  (function() {
+    const saved = localStorage.getItem('portfolio-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <title>Portfolio — Network Engineering · IT Support · AI Solutions</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/engine@3.5.0/tsparticles.engine.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/slim@3.5.0/tsparticles.slim.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.css">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.173.0/build/three.module.min.js"
+    }
+  }
+</script>
 <style>
   :root {
     --bg: #080808;
@@ -19,14 +41,145 @@
     --muted: #666660;
     --subtle: #999990;
     --green: #3DCC85;
+    --nav-bg: rgba(8,8,8,0.85);
+    --nav-mobile-bg: rgba(8,8,8,0.98);
+    --three-opacity: 0.5;
+    --emoji-opacity: 0.15;
     --mono: 'DM Mono', monospace;
     --sans: 'DM Sans', sans-serif;
     --display: 'Syne', sans-serif;
+    --cursor-ring: rgba(224,123,48,0.35);
+    --cursor-ring-hover: rgba(224,123,48,0.6);
+    --cursor-ring-hover-bg: rgba(224,123,48,0.06);
+    --cursor-ring-click-bg: rgba(224,123,48,0.15);
+    --tsparticles-links: #E07B30;
+    --hero-glow: rgba(224,123,48,0.07);
+    --grid-line: rgba(255,255,255,0.03);
+    --skill-track: rgba(255,255,255,0.06);
+    --code-num: #D19A66;
+    --code-var: #C678DD;
+  }
+
+  /* ── LIGHT THEME ── */
+  [data-theme="light"] {
+    --bg: #f8f6f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: rgba(0,0,0,0.08);
+    --accent: #D06D20;
+    --accent2: #b85c18;
+    --text: #1a1a1a;
+    --muted: #999990;
+    --subtle: #666660;
+    --green: #2a9d6e;
+    --nav-bg: rgba(248,246,240,0.88);
+    --cursor-ring: rgba(208,109,32,0.3);
+    --cursor-ring-hover: rgba(208,109,32,0.55);
+    --cursor-ring-hover-bg: rgba(208,109,32,0.06);
+    --cursor-ring-click-bg: rgba(208,109,32,0.15);
+    --tsparticles-links: #D06D20;
+    --hero-glow: rgba(208,109,32,0.08);
+    --grid-line: rgba(0,0,0,0.04);
+    --nav-mobile-bg: rgba(248,246,240,0.98);
+    --three-opacity: 0.7;
+    --emoji-opacity: 0.12;
+    --skill-track: rgba(0,0,0,0.08);
+    --code-num: #D06D20;
+    --code-var: #8B5CF6;
+  }
+
+  /* ── THEME TRANSITION ── */
+  html, body, nav, section, footer, .service-card, .proj-card, .approach-card,
+  .project-featured, .hero-visual, .hero-card-float, .system-panel, .system-console,
+  .contact-link, .avail-box, .code-section, .code-header, .code-body,
+  .nav-mobile, .nav-mobile-close, .stat-icon-3d, .icon-3d-lg,
+  .cursor-dot, .cursor-ring, .skill-progress-fill, #three-canvas {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease,
+                box-shadow 0.4s ease, opacity 0.4s ease;
+  }
+
+  /* ── THEME TOGGLE ── */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface2);
+    color: var(--subtle);
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-left: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 20px rgba(224,123,48,0.12);
+  }
+  .theme-toggle:active {
+    transform: scale(0.88);
+  }
+
+  /* ── KEYBOARD SHORTCUT TOOLTIP ── */
+  .theme-toggle::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    transform-origin: bottom center;
+    background: var(--surface2);
+    color: var(--subtle);
+    border: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .theme-toggle:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  .theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.5;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+  }
+  .theme-toggle .icon-sun {
+    position: absolute;
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+  .theme-toggle .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  [data-theme="light"] .theme-toggle .icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  [data-theme="light"] .theme-toggle .icon-moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { /* smooth scrolling handled by Lenis */ }
 
   body {
     background: var(--bg);
@@ -51,7 +204,7 @@
     padding: 1.25rem 4rem;
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(20px);
-    background: rgba(8,8,8,0.85);
+    background: var(--nav-bg);
   }
   .nav-logo {
     font-family: var(--mono);
@@ -235,7 +388,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(8,8,8,0.98);
+    background: var(--nav-mobile-bg);
     z-index: 150;
     flex-direction: column;
     align-items: center;
@@ -290,7 +443,7 @@
     position: absolute;
     width: 600px; height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(224,123,48,0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--hero-glow) 0%, transparent 70%);
     top: 10%; left: -10%;
     pointer-events: none;
   }
@@ -300,6 +453,7 @@
     justify-content: center;
     padding: 5rem 3rem 5rem 4rem;
     position: relative;
+    isolation: isolate;
   }
   .hero-tag {
     font-family: var(--mono);
@@ -402,8 +556,8 @@
     content: '';
     position: absolute; inset: 0;
     background:
-      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
-      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+      repeating-linear-gradient(0deg, transparent, transparent 39px, var(--grid-line) 39px, var(--grid-line) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, var(--grid-line) 39px, var(--grid-line) 40px);
   }
   .hero-card-float {
     position: relative;
@@ -496,6 +650,10 @@
     color: var(--subtle);
     margin: 1rem 0 0;
     padding-left: 1rem;
+  }
+  .feature-list.emoji-list {
+    list-style: none;
+    padding-left: 0;
   }
   .feature-list li {
     margin-bottom: 0.85rem;
@@ -657,7 +815,7 @@
     position: absolute;
     width: 300px; height: 300px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(224,123,48,0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--hero-glow) 0%, transparent 70%);
     top: -50px; right: -80px;
   }
   .steps-title {
@@ -680,7 +838,8 @@
     font-family: var(--display);
     font-size: 1.5rem;
     font-weight: 800;
-    color: rgba(224,123,48,0.2);
+    color: var(--accent);
+    opacity: 0.2;
     min-width: 2rem;
     line-height: 1;
   }
@@ -1156,22 +1315,398 @@
     .code-body { font-size: 10px; padding: 0.75rem; line-height: 1.7; }
     .code-body pre { overflow-x: auto; }
   }
+
+  /* ── CUSTOM CURSOR ── */
+  @media (hover: hover) and (pointer: fine) {
+    body { cursor: none; }
+    a, button, .btn-primary, .btn-ghost, .service-card, .proj-card,
+    .contact-link, .approach-card, .nav-cta, .nav-logo, .stack-pill,
+    .tag, .status-pill { cursor: none; }
+  }
+  .cursor-dot {
+    pointer-events: none; position: fixed; z-index: 99999;
+    width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.15s ease, height 0.15s ease, background 0.2s ease, opacity 0.2s ease;
+    will-change: transform;
+  }
+  .cursor-ring {
+    pointer-events: none; position: fixed; z-index: 99998;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--cursor-ring);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.35s ease, height 0.35s ease, border-color 0.35s ease,
+                background 0.35s ease, opacity 0.3s ease;
+    will-change: transform;
+  }
+  .cursor-ring.hover {
+    width: 60px; height: 60px;
+    border-color: var(--cursor-ring-hover);
+    background: var(--cursor-ring-hover-bg);
+  }
+  .cursor-ring.click {
+    width: 28px; height: 28px;
+    border-color: var(--accent);
+    background: var(--cursor-ring-click-bg);
+  }
+
+  /* ── 3D TILT ── */
+  .tilt-card {
+    transition: transform 0.1s ease-out !important;
+    will-change: transform;
+  }
+
+  /* ── PARTICLE CONTAINER ── */
+  #particle-canvas {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* ── THREE.JS CANVAS ── */
+  #three-canvas {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: var(--three-opacity);
+  }
+  .section-3d-canvas {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    opacity: 0.25;
+  }
+  .section-3d-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── 3D EMOJI EFFECTS ── */
+  .emoji-3d {
+    display: inline-block;
+    font-size: 1.1em;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(224,123,48,0.25)) drop-shadow(0 -1px 2px rgba(255,255,255,0.06));
+    transform: perspective(600px) rotateX(3deg) rotateY(-3deg) translateZ(2px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+    margin-right: 0.15em;
+    vertical-align: -0.05em;
+    pointer-events: none;
+  }
+  .tag .emoji-3d,
+  .stack-pill .emoji-3d,
+  .proj-tech span .emoji-3d {
+    font-size: 0.9em;
+    margin-right: 0.1em;
+    vertical-align: -0.08em;
+    filter: drop-shadow(0 1px 2px rgba(224,123,48,0.2));
+    transform: perspective(400px) rotateX(2deg) rotateY(-2deg);
+  }
+  .tag:hover .emoji-3d,
+  .stack-pill:hover .emoji-3d,
+  .proj-tech span:hover .emoji-3d {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.25);
+    filter: drop-shadow(0 2px 6px rgba(224,123,48,0.4));
+  }
+  .feature-list li .emoji-3d {
+    font-size: 0.9em;
+    margin-right: 0.2em;
+    vertical-align: -0.1em;
+    filter: drop-shadow(0 1px 2px rgba(224,123,48,0.2));
+  }
+  .feature-list li:hover .emoji-3d {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.2);
+    filter: drop-shadow(0 2px 5px rgba(224,123,48,0.35));
+  }
+  .skill-category li .emoji-3d {
+    display: inline-block;
+    transform: perspective(400px) rotateX(2deg) rotateY(-2deg);
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  .skill-category li:hover .emoji-3d {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.25);
+    filter: drop-shadow(0 2px 6px rgba(224,123,48,0.4));
+  }
+
+  /* ── 3D ICON EFFECTS (Lucide replacements for emojis) ── */
+  .icon-emoji-3d {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: -0.15em;
+    filter: drop-shadow(0 2px 4px rgba(224,123,48,0.25)) drop-shadow(0 -1px 2px rgba(255,255,255,0.06));
+    transform: perspective(600px) rotateX(3deg) rotateY(-3deg) translateZ(2px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+    pointer-events: none;
+    stroke-width: 1.5;
+  }
+  .tag .icon-emoji-3d,
+  .stack-pill .icon-emoji-3d,
+  .proj-tech span .icon-emoji-3d {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.12em;
+    margin-right: 0.08em;
+    filter: drop-shadow(0 1px 2px rgba(224,123,48,0.2));
+    transform: perspective(400px) rotateX(2deg) rotateY(-2deg);
+  }
+  .tag:hover .icon-emoji-3d,
+  .stack-pill:hover .icon-emoji-3d,
+  .proj-tech span:hover .icon-emoji-3d {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.25);
+    filter: drop-shadow(0 2px 6px rgba(224,123,48,0.4));
+  }
+  .feature-list li .icon-emoji-3d {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.12em;
+    margin-right: 0.15em;
+    filter: drop-shadow(0 1px 2px rgba(224,123,48,0.2));
+  }
+  .feature-list li:hover .icon-emoji-3d {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.2);
+    filter: drop-shadow(0 2px 5px rgba(224,123,48,0.35));
+  }
+  .skill-category li .icon-emoji-3d {
+    display: inline-block;
+    transform: perspective(400px) rotateX(2deg) rotateY(-2deg);
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  .skill-category li:hover .icon-emoji-3d {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.25);
+    filter: drop-shadow(0 2px 6px rgba(224,123,48,0.4));
+  }
+  .skill-cat-label .icon-emoji-3d {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.15em;
+    margin-right: 0.15em;
+  }
+  .contact-link-label .icon-emoji-3d {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.12em;
+    margin-right: 0.3em;
+  }
+  .btn-primary .icon-emoji-3d,
+  .btn-ghost .icon-emoji-3d {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.1em;
+  }
+  .hero-emoji-icon {
+    position: absolute;
+    width: 2.5rem;
+    height: 2.5rem;
+    opacity: var(--emoji-opacity);
+    will-change: transform;
+    animation: emojiFloat 6s ease-in-out infinite;
+    stroke-width: 1.5;
+    color: var(--accent);
+  }
+
+  /* ── SKILL ICONS FROM skillicons.dev ── */
+  .skill-icon-svg {
+    display: inline-block;
+    width: 1.3em;
+    height: 1.3em;
+    vertical-align: -0.2em;
+    filter: drop-shadow(0 2px 4px rgba(224,123,48,0.25)) drop-shadow(0 -1px 2px rgba(255,255,255,0.06));
+    transform: perspective(600px) rotateX(3deg) rotateY(-3deg) translateZ(2px);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+    pointer-events: none;
+    border-radius: 4px;
+    image-rendering: auto;
+    margin-right: 0.1em;
+  }
+  .tag .skill-icon-svg,
+  .stack-pill .skill-icon-svg,
+  .proj-tech span .skill-icon-svg {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.15em;
+    margin-right: 0.05em;
+    filter: drop-shadow(0 1px 2px rgba(224,123,48,0.2));
+    transform: perspective(400px) rotateX(2deg) rotateY(-2deg);
+  }
+  .tag:hover .skill-icon-svg,
+  .stack-pill:hover .skill-icon-svg,
+  .proj-tech span:hover .skill-icon-svg {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.25);
+    filter: drop-shadow(0 2px 6px rgba(224,123,48,0.4));
+  }
+  .feature-list li .skill-icon-svg {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.15em;
+    margin-right: 0.15em;
+    filter: drop-shadow(0 1px 2px rgba(224,123,48,0.2));
+  }
+  .feature-list li:hover .skill-icon-svg {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.2);
+    filter: drop-shadow(0 2px 5px rgba(224,123,48,0.35));
+  }
+  .skill-category li .skill-icon-svg {
+    display: inline-block;
+    transform: perspective(400px) rotateX(2deg) rotateY(-2deg);
+    transition: transform 0.25s ease, filter 0.25s ease;
+  }
+  .skill-category li:hover .skill-icon-svg {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) scale(1.25);
+    filter: drop-shadow(0 2px 6px rgba(224,123,48,0.4));
+  }
+  .skill-cat-label .skill-icon-svg {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: -0.2em;
+    margin-right: 0.15em;
+  }
+  .contact-link-label .skill-icon-svg {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: -0.15em;
+    margin-right: 0.3em;
+  }
+
+  /* ── SKILL BAR ANIMATION ── */
+  .skill-progress-wrap {
+    margin-top: 0.3rem;
+    height: 4px;
+    background: var(--skill-track);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .skill-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #f5a35c);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ── HERO FLOATING EMOJIS ── */
+  .hero-emojis {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .hero-emoji {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: var(--emoji-opacity);
+    will-change: transform;
+    animation: emojiFloat 6s ease-in-out infinite;
+  }
+  .hero-emoji:nth-child(1) { top: 8%; left: 8%; animation-delay: 0s; }
+  .hero-emoji:nth-child(2) { top: 60%; left: 5%; animation-delay: 1.5s; }
+  .hero-emoji:nth-child(3) { bottom: 15%; right: 12%; animation-delay: 3s; font-size: 3rem; }
+  .hero-emoji:nth-child(4) { top: 25%; right: 8%; animation-delay: 0.8s; }
+  .hero-emoji:nth-child(5) { bottom: 35%; left: 55%; animation-delay: 2.2s; }
+
+  @keyframes emojiFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(5deg); }
+    50% { transform: translateY(-18px) rotate(-3deg); }
+    75% { transform: translateY(-8px) rotate(4deg); }
+  }
+
+  /* ── SERVICE ICON ENHANCEMENTS ── */
+  .service-icon {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+  .service-card:hover .service-icon {
+    transform: scale(1.15) translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 0 24px rgba(224,123,48,0.15);
+  }
+
+  /* ── INTERACTIVE STATS ── */
+  .stat-num {
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  .hero-stats > div:hover .stat-num {
+    transform: scale(1.08);
+    color: #f5a35c;
+  }
+
+  /* ── PROJECT CARD ENHANCEMENTS ── */
+  .proj-card {
+    transition: background 0.3s, transform 0.3s ease !important;
+    will-change: transform;
+  }
+
+  /* ── CONTACT LINK MAGNETIC BASE ── */
+  .contact-link {
+    transition: background 0.2s, border-color 0.2s, transform 0.1s ease-out !important;
+    will-change: transform;
+  }
+
+  /* ── GLOW PULSE ON HERO CARD ── */
+  .hero-card-float {
+    position: relative;
+    z-index: 2;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    width: 340px;
+    animation: float 4s ease-in-out infinite;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .hero-card-float:hover {
+    border-color: rgba(224,123,48,0.3);
+    box-shadow: 0 0 40px rgba(224,123,48,0.08);
+  }
+
+  /* ── LENIS & GSAP PARALLAX ── */
+  [data-speed] {
+    will-change: transform;
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  .parallax-section {
+    will-change: transform;
+    position: relative;
+  }
 </style>
 </head>
 <body>
 
 <!-- ── NAV ── -->
 <nav>
-  <div class="nav-logo">[ Portfolio.v1 ]</div>
+  <div class="nav-logo"><i data-lucide="briefcase" class="icon-emoji-3d"></i> [ Portfolio.v1 ]</div>
   <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#network">Network</a></li>
-    <li><a href="#project">Project</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#services"><i data-lucide="wrench" class="icon-emoji-3d"></i>Services</a></li>
+    <li><a href="#network"><i data-lucide="globe" class="icon-emoji-3d"></i>Network</a></li>
+    <li><a href="#project"><i data-lucide="folder" class="icon-emoji-3d"></i>Project</a></li>
+    <li><a href="#about"><i data-lucide="user" class="icon-emoji-3d"></i>About</a></li>
+    <li><a href="#skills"><i data-lucide="bar-chart-3" class="icon-emoji-3d"></i>Skills</a></li>
+    <li><a href="#contact"><i data-lucide="mail" class="icon-emoji-3d"></i>Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Hire Me →</a>
+  <a href="#contact" class="nav-cta"><i data-lucide="handshake" class="icon-emoji-3d"></i>Hire Me →</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" data-tip="T / Ctrl+K">
+    <i data-lucide="sun" class="icon-sun"></i>
+    <i data-lucide="moon" class="icon-moon"></i>
+  </button>
   <div class="nav-hamburger" onclick="toggleMobileMenu()">
     <span></span>
     <span></span>
@@ -1180,19 +1715,25 @@
 </nav>
 <div class="nav-mobile" onclick="closeMobileMenu()">
   <div class="nav-mobile-close" onclick="closeMobileMenu()">✕</div>
-  <a href="#services" onclick="closeMobileMenu()">Services</a>
-  <a href="#network" onclick="closeMobileMenu()">Network</a>
-  <a href="#project" onclick="closeMobileMenu()">Project</a>
-  <a href="#about" onclick="closeMobileMenu()">About</a>
-  <a href="#skills" onclick="closeMobileMenu()">Skills</a>
-  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
-  <a href="#contact" class="nav-cta" style="margin-top: 1rem;" onclick="closeMobileMenu()">Hire Me →</a>
+  <a href="#services" onclick="closeMobileMenu()"><i data-lucide="wrench" class="icon-emoji-3d"></i>Services</a>
+  <a href="#network" onclick="closeMobileMenu()"><i data-lucide="globe" class="icon-emoji-3d"></i>Network</a>
+  <a href="#project" onclick="closeMobileMenu()"><i data-lucide="folder" class="icon-emoji-3d"></i>Project</a>
+  <a href="#about" onclick="closeMobileMenu()"><i data-lucide="user" class="icon-emoji-3d"></i>About</a>
+  <a href="#skills" onclick="closeMobileMenu()"><i data-lucide="bar-chart-3" class="icon-emoji-3d"></i>Skills</a>
+  <a href="#contact" onclick="closeMobileMenu()"><i data-lucide="mail" class="icon-emoji-3d"></i>Contact</a>
+  <a href="#contact" class="nav-cta" style="margin-top: 1rem;" onclick="closeMobileMenu()"><i data-lucide="handshake" class="icon-emoji-3d"></i>Hire Me →</a>
 </div>
 
 <!-- ── HERO ── -->
 <section class="hero" id="home">
   <div class="hero-left">
-    <div class="hero-tag">AVAILABLE FOR PROJECTS · DAR ES SALAAM, TANZANIA</div>
+    <div class="hero-emojis">
+      <i data-lucide="globe" class="hero-emoji-icon"></i>
+      <i data-lucide="bot" class="hero-emoji-icon"></i>
+      <i data-lucide="zap" class="hero-emoji-icon"></i>
+      <i data-lucide="wrench" class="hero-emoji-icon"></i>
+      <i data-lucide="shield" class="hero-emoji-icon"></i>
+    </div>
     <h1 class="hero-title">
       Most IT professionals fix problems.<br>
       I fix them — then build <span style="color: var(--accent);">AI-powered systems</span> so they don't come back.
@@ -1204,25 +1745,27 @@
       From configuring Cisco and MikroTik infrastructure to deploying full-stack platforms, I work across the full technical stack to deliver solutions that last.
     </p>
     <div class="hero-actions">
-      <a href="#project" class="btn-primary">View featured project</a>
-      <a href="#contact" class="btn-ghost">Get in touch</a>
+      <a href="#project" class="btn-primary"><i data-lucide="search" class="icon-emoji-3d"></i>View featured project</a>
+      <a href="#contact" class="btn-ghost"><i data-lucide="mail" class="icon-emoji-3d"></i>Get in touch</a>
     </div>
     <div class="hero-stats">
       <div>
         <div class="stat-num">02+</div>
-        <div class="stat-label">Years Experience</div>
+        <div class="stat-label"><i data-lucide="clock" class="icon-emoji-3d"></i>Years Experience</div>
       </div>
       <div>
         <div class="stat-num">15+</div>
-        <div class="stat-label">Projects Completed</div>
+        <div class="stat-label"><i data-lucide="check-circle" class="icon-emoji-3d"></i>Projects Completed</div>
       </div>
       <div>
         <div class="stat-num">15+</div>
-        <div class="stat-label">Clients & Organizations Supported</div>
+        <div class="stat-label"><i data-lucide="handshake" class="icon-emoji-3d"></i>Clients & Organizations Supported</div>
       </div>
     </div>
   </div>
   <div class="hero-right">
+    <canvas id="three-canvas"></canvas>
+    <div id="particle-canvas"></div>
     <div class="hero-visual">
       <div class="hero-card-float">
         <div class="card-label">// AI Troubleshooter — Live</div>
@@ -1248,135 +1791,102 @@
   </div>
 </section>
 
-<section id="system">
-  <div class="section-label">System Info</div>
-  <h2 class="section-title">Browser & Device System</h2>
-  <p class="section-sub">This page detects your browser and device system data and displays it directly in the web interface.</p>
-  <div class="system-panel fade-up">
-    <div class="system-panel-content">
-      <div class="system-info">
-        <div class="system-info-item">
-          <div class="system-info-label">Platform</div>
-          <div id="system-platform" class="system-info-value">Loading...</div>
-        </div>
-        <div class="system-info-item">
-          <div class="system-info-label">User Agent</div>
-          <div id="system-useragent" class="system-info-value">Loading...</div>
-        </div>
-        <div class="system-info-item">
-          <div class="system-info-label">Language</div>
-          <div id="system-language" class="system-info-value">Loading...</div>
-        </div>
-        <div class="system-info-item">
-          <div class="system-info-label">Hardware</div>
-          <div id="system-hardware" class="system-info-value">Loading...</div>
-        </div>
-      </div>
-      <div class="system-console">
-        <div class="system-console-line"><span>OS</span><span id="system-os">Loading...</span></div>
-        <div class="system-console-line"><span>Browser</span><span id="system-browser">Loading...</span></div>
-        <div class="system-console-line"><span>Screen</span><span id="system-screen">Loading...</span></div>
-        <div class="system-console-line"><span>Cookies</span><span id="system-cookies">Loading...</span></div>
-        <div class="system-console-line"><span>Connection</span><span id="system-connection">Loading...</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ── SERVICES ── -->
-<section id="services">
-  <div class="section-label">What I Do</div>
-  <h2 class="section-title">What I Do</h2>
-  <p class="section-sub">Most professionals specialize in one area. I work across networking, systems administration, IT support, and AI-powered automation to help organizations operate more efficiently.</p>
+<section id="services" class="section-3d-wrap">
+  <canvas id="services-3d" class="section-3d-canvas"></canvas>
+  <div class="section-label"><i data-lucide="zap" class="icon-emoji-3d"></i> What I Do</div>
+  <h2 class="section-title"><i data-lucide="zap" class="icon-emoji-3d"></i> What I Do</h2>
+  <p class="section-sub"><i data-lucide="lightbulb" class="icon-emoji-3d"></i> Most professionals specialize in one area. I work across networking, systems administration, IT support, and AI-powered automation to help organizations operate more efficiently.</p>
   <div class="services-grid">
     <div class="service-card fade-up">
-      <div class="service-icon"><i data-lucide="network"></i></div>
-      <div class="service-name">Network Engineering & Infrastructure</div>
+      <div class="service-icon"><i data-lucide="router"></i></div>
+      <div class="service-name"><i data-lucide="globe" class="icon-emoji-3d"></i> Network Engineering & Infrastructure</div>
       <div class="service-desc">Design, configure, and maintain reliable network infrastructures that support business operations. Experience includes VLAN implementation, routing, switching, DHCP/DNS services, firewall configuration, VPN deployment, and network troubleshooting.</div>
       <div class="service-tags">
-        <span class="tag">Cisco</span>
-        <span class="tag">MikroTik</span>
-        <span class="tag">VLANs</span>
-        <span class="tag">VPNs</span>
-        <span class="tag">Firewalls</span>
+        <span class="tag"><i data-lucide="globe" class="icon-emoji-3d"></i>Cisco</span>
+        <span class="tag"><i data-lucide="radio" class="icon-emoji-3d"></i>MikroTik</span>
+        <span class="tag"><i data-lucide="shuffle" class="icon-emoji-3d"></i>VLANs</span>
+        <span class="tag"><i data-lucide="lock" class="icon-emoji-3d"></i>VPNs</span>
+        <span class="tag"><i data-lucide="shield" class="icon-emoji-3d"></i>Firewalls</span>
       </div>
     </div>
     <div class="service-card fade-up delay-1">
-      <div class="service-icon"><i data-lucide="monitor"></i></div>
-      <div class="service-name">IT Support & Systems Administration</div>
+      <div class="service-icon"><i data-lucide="server"></i></div>
+      <div class="service-name"><i data-lucide="monitor" class="icon-emoji-3d"></i> IT Support & Systems Administration</div>
       <div class="service-desc">Diagnosing and resolving technical issues across Windows, Linux, virtualized environments, and ERP systems. Focused on minimizing downtime and improving system reliability.</div>
       <div class="service-tags">
-        <span class="tag">Windows</span>
-        <span class="tag">Linux</span>
-        <span class="tag">VirtualBox</span>
-        <span class="tag">Odoo ERP</span>
+        <span class="tag"><img src="https://skillicons.dev/icons?i=windows" class="skill-icon-svg" alt="Windows">Windows
+        <span class="tag"><img src="https://skillicons.dev/icons?i=linux" class="skill-icon-svg" alt="Linux">Linux</span>
+        <span class="tag"><i data-lucide="laptop" class="icon-emoji-3d"></i>VirtualBox</span>
+        <span class="tag"><i data-lucide="clipboard" class="icon-emoji-3d"></i>Odoo ERP</span>
       </div>
     </div>
     <div class="service-card fade-up delay-2">
       <div class="service-icon"><i data-lucide="bot"></i></div>
-      <div class="service-name">AI-Powered Automation</div>
+      <div class="service-name"><i data-lucide="bot" class="icon-emoji-3d"></i> AI-Powered Automation</div>
       <div class="service-desc">Building practical AI-assisted tools that streamline repetitive processes, improve troubleshooting workflows, and enhance decision-making.</div>
       <div class="service-tags">
-        <span class="tag">Prompt Engineering</span>
-        <span class="tag">APIs</span>
-        <span class="tag">Workflow Automation</span>
+        <span class="tag"><i data-lucide="message-circle" class="icon-emoji-3d"></i>Prompt Engineering</span>
+        <span class="tag"><i data-lucide="plug" class="icon-emoji-3d"></i>APIs</span>
+        <span class="tag"><i data-lucide="settings" class="icon-emoji-3d"></i>Workflow Automation</span>
       </div>
     </div>
     <div class="service-card fade-up delay-3">
-      <div class="service-icon"><i data-lucide="settings-2"></i></div>
-      <div class="service-name">Systems Integration</div>
+      <div class="service-icon"><i data-lucide="puzzle"></i></div>
+      <div class="service-name"><i data-lucide="link" class="icon-emoji-3d"></i> Systems Integration</div>
       <div class="service-desc">Connecting applications, databases, and services through APIs and lightweight automation solutions to reduce manual work and improve efficiency.</div>
       <div class="service-tags">
-        <span class="tag">Python</span>
-        <span class="tag">JavaScript</span>
-        <span class="tag">REST APIs</span>
-        <span class="tag">Databases</span>
+        <span class="tag"><img src="https://skillicons.dev/icons?i=py" class="skill-icon-svg" alt="Python">Python</span>
+        <span class="tag"><img src="https://skillicons.dev/icons?i=js" class="skill-icon-svg" alt="JavaScript">JavaScript</span>
+        <span class="tag"><i data-lucide="link" class="icon-emoji-3d"></i>REST APIs</span>
+        <span class="tag"><i data-lucide="database" class="icon-emoji-3d"></i>Databases</span>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ── NETWORK ENGINEERING ── -->
-<section id="network">
-  <div class="section-label">Network Engineering</div>
-  <h2 class="section-title">Designing Secure and Scalable Networks</h2>
-  <p class="section-sub">Networks are the foundation of modern organizations. I design, deploy, and maintain network solutions that prioritize performance, reliability, and security.</p>
+<section id="network" class="section-3d-wrap">
+  <canvas id="network-3d" class="section-3d-canvas"></canvas>
+  <div class="section-label"><i data-lucide="globe" class="icon-emoji-3d"></i> Network Engineering</div>
+  <h2 class="section-title"><i data-lucide="lock" class="icon-emoji-3d"></i> Designing Secure and Scalable Networks</h2>
+  <p class="section-sub"><i data-lucide="building" class="icon-emoji-3d"></i> Networks are the foundation of modern organizations. I design, deploy, and maintain network solutions that prioritize performance, reliability, and security.</p>
 
   <div class="project-featured fade-up">
     <div class="project-featured-left">
-      <div class="project-badge"><i data-lucide="network" style="width:12px;height:12px;stroke-width:1.5;"></i> Network Experience</div>
-      <h3 class="project-title">Network Engineering & Infrastructure</h3>
+      <div class="project-badge"><i data-lucide="radio" style="width:12px;height:12px;stroke-width:1.5;"></i> Network Experience</div>
+      <h3 class="project-title"><i data-lucide="globe" class="icon-emoji-3d"></i> Network Engineering & Infrastructure</h3>
       <p class="project-desc">My experience includes:</p>
-      <ul class="feature-list">
-        <li>VLAN design and segmentation</li>
-        <li>Inter-VLAN routing</li>
-        <li>Router and switch configuration</li>
-        <li>Firewall implementation</li>
-        <li>DHCP and DNS deployment</li>
-        <li>VPN configuration</li>
-        <li>Wireless network deployment</li>
-        <li>Network monitoring and troubleshooting</li>
+      <ul class="feature-list emoji-list">
+        <li><i data-lucide="shuffle" class="icon-emoji-3d"></i>VLAN design and segmentation</li>
+        <li><i data-lucide="refresh-cw" class="icon-emoji-3d"></i>Inter-VLAN routing</li>
+        <li><i data-lucide="signal" class="icon-emoji-3d"></i>Router and switch configuration</li>
+        <li><i data-lucide="shield" class="icon-emoji-3d"></i>Firewall implementation</li>
+        <li><i data-lucide="clipboard" class="icon-emoji-3d"></i>DHCP and DNS deployment</li>
+        <li><i data-lucide="lock" class="icon-emoji-3d"></i>VPN configuration</li>
+        <li><i data-lucide="radio" class="icon-emoji-3d"></i>Wireless network deployment</li>
+        <li><i data-lucide="bar-chart-3" class="icon-emoji-3d"></i>Network monitoring and troubleshooting</li>
       </ul>
       <div class="project-stack" style="margin-top: 1.5rem;">
-        <span class="stack-pill">Cisco IOS</span>
-        <span class="stack-pill">MikroTik RouterOS</span>
-        <span class="stack-pill">Linux Networking</span>
-        <span class="stack-pill">DHCP & DNS Services</span>
-        <span class="stack-pill">Firewall & NAT Configuration</span>
-        <span class="stack-pill">VPN Technologies</span>
-        <span class="stack-pill">Wireshark & Network Diagnostics</span>
+        <span class="stack-pill"><i data-lucide="globe" class="icon-emoji-3d"></i>Cisco IOS</span>
+        <span class="stack-pill"><i data-lucide="radio" class="icon-emoji-3d"></i>MikroTik RouterOS</span>
+        <span class="stack-pill"><img src="https://skillicons.dev/icons?i=linux" class="skill-icon-svg" alt="Linux">Linux Networking</span>
+        <span class="stack-pill"><i data-lucide="clipboard" class="icon-emoji-3d"></i>DHCP & DNS Services</span>
+        <span class="stack-pill"><i data-lucide="shield" class="icon-emoji-3d"></i>Firewall & NAT Configuration</span>
+        <span class="stack-pill"><i data-lucide="lock" class="icon-emoji-3d"></i>VPN Technologies</span>
+        <span class="stack-pill"><i data-lucide="bar-chart-3" class="icon-emoji-3d"></i>Wireshark & Network Diagnostics</span>
       </div>
     </div>
     <div class="project-featured-right">
-      <div class="steps-title">Core Technologies</div>
-      <ul class="feature-list">
-        <li>Cisco IOS</li>
-        <li>MikroTik RouterOS</li>
-        <li>Linux Networking</li>
-        <li>DHCP & DNS Services</li>
-        <li>Firewall & NAT Configuration</li>
-        <li>VPN Technologies</li>
-        <li>Wireshark & Network Diagnostics</li>
+      <div class="steps-title"><i data-lucide="radio" class="icon-emoji-3d"></i> Core Technologies</div>
+      <ul class="feature-list emoji-list">
+        <li><i data-lucide="globe" class="icon-emoji-3d"></i>Cisco IOS</li>
+        <li><i data-lucide="radio" class="icon-emoji-3d"></i>MikroTik RouterOS</li>
+        <li><img src="https://skillicons.dev/icons?i=linux" class="skill-icon-svg" alt="Linux">Linux Networking</li>
+        <li><i data-lucide="clipboard" class="icon-emoji-3d"></i>DHCP & DNS Services</li>
+        <li><i data-lucide="shield" class="icon-emoji-3d"></i>Firewall & NAT Configuration</li>
+        <li><i data-lucide="lock" class="icon-emoji-3d"></i>VPN Technologies</li>
+        <li><i data-lucide="bar-chart-3" class="icon-emoji-3d"></i>Wireshark & Network Diagnostics</li>
       </ul>
     </div>
   </div>
@@ -1386,91 +1896,91 @@
 <section id="about">
   <div class="about-grid">
     <div>
-      <div class="section-label">About Me</div>
-      <h2 class="section-title">Carlos Peter</h2>
+      <div class="section-label"><i data-lucide="user" class="icon-emoji-3d"></i> About Me</div>
+      <h2 class="section-title"><i data-lucide="code" class="icon-emoji-3d"></i> Carlos Peter</h2>
       <div class="about-text">
         <p>
-          I am a Network Engineer and IT professional with experience in networking, systems administration, ERP support, and emerging AI technologies.
+          <i data-lucide="hand" class="icon-emoji-3d"></i> I am a Network Engineer and IT professional with experience in networking, systems administration, ERP support, and emerging AI technologies.
         </p>
         <p>
-          My background includes configuring Cisco and MikroTik networks, administering Windows and Linux systems, supporting ERP environments, and developing automation tools that improve operational efficiency.
+          <i data-lucide="wrench" class="icon-emoji-3d"></i> My background includes configuring Cisco and MikroTik networks, administering Windows and Linux systems, supporting ERP environments, and developing automation tools that improve operational efficiency.
         </p>
         <p>
-          I enjoy solving technical problems, documenting solutions, and designing systems that are reliable, maintainable, and scalable.
+          <i data-lucide="lightbulb" class="icon-emoji-3d"></i> I enjoy solving technical problems, documenting solutions, and designing systems that are reliable, maintainable, and scalable.
         </p>
       </div>
       <div class="approach-cards">
         <div class="approach-card">
-          <div class="approach-icon"><i data-lucide="target"></i></div>
+          <div class="approach-icon"><i data-lucide="search"></i></div>
           <div>
-            <div class="approach-name">Diagnose Before Building</div>
+            <div class="approach-name"><i data-lucide="stethoscope" class="icon-emoji-3d"></i> Diagnose Before Building</div>
             <div class="approach-desc">Understand the real cause of a problem before implementing a solution.</div>
           </div>
         </div>
         <div class="approach-card">
-          <div class="approach-icon"><i data-lucide="link-2"></i></div>
+          <div class="approach-icon"><i data-lucide="shield"></i></div>
           <div>
-            <div class="approach-name">Design for Reliability</div>
+            <div class="approach-name"><i data-lucide="settings" class="icon-emoji-3d"></i> Design for Reliability</div>
             <div class="approach-desc">Build systems that remain stable and manageable over time.</div>
           </div>
         </div>
         <div class="approach-card">
           <div class="approach-icon"><i data-lucide="file-text"></i></div>
           <div>
-            <div class="approach-name">Document Everything</div>
+            <div class="approach-name"><i data-lucide="file-text" class="icon-emoji-3d"></i> Document Everything</div>
             <div class="approach-desc">Well-documented systems are easier to support, improve, and scale.</div>
           </div>
         </div>
       </div>
     </div>
     <div id="skills">
-      <div class="section-label" style="margin-bottom: 2rem;">Technical Skills</div>
+      <div class="section-label" style="margin-bottom: 2rem;"><i data-lucide="bar-chart-3" class="icon-emoji-3d"></i> Technical Skills</div>
       <div class="skills-section">
 
         <div class="skill-category fade-up">
-          <div class="skill-cat-label">Networking</div>
-          <ul class="feature-list">
-            <li>Cisco IOS</li>
-            <li>MikroTik RouterOS</li>
-            <li>VLAN Configuration</li>
-            <li>Routing & Switching</li>
-            <li>DHCP & DNS</li>
-            <li>VPN Technologies</li>
-            <li>Firewall Administration</li>
-            <li>Network Troubleshooting</li>
+          <div class="skill-cat-label"><i data-lucide="globe" class="icon-emoji-3d"></i> Networking</div>
+          <ul class="feature-list emoji-list">
+            <li><span class="icon-inline"><i data-lucide="cpu"></i></span>Cisco IOS</li>
+            <li><span class="icon-inline"><i data-lucide="radio"></i></span>MikroTik RouterOS</li>
+            <li><span class="icon-inline"><i data-lucide="layers"></i></span>VLAN Configuration</li>
+            <li><span class="icon-inline"><i data-lucide="git-fork"></i></span>Routing & Switching</li>
+            <li><span class="icon-inline"><i data-lucide="server"></i></span>DHCP & DNS</li>
+            <li><span class="icon-inline"><i data-lucide="lock"></i></span>VPN Technologies</li>
+            <li><span class="icon-inline"><i data-lucide="shield-check"></i></span>Firewall Administration</li>
+            <li><span class="icon-inline"><i data-lucide="activity"></i></span>Network Troubleshooting</li>
           </ul>
         </div>
 
         <div class="skill-category fade-up delay-1">
-          <div class="skill-cat-label">Systems Administration</div>
-          <ul class="feature-list">
-            <li>Windows Administration</li>
-            <li>Linux Administration</li>
-            <li>Virtualization (VirtualBox)</li>
-            <li>System Monitoring</li>
-            <li>User Management</li>
+          <div class="skill-cat-label"><i data-lucide="monitor" class="icon-emoji-3d"></i> Systems Administration</div>
+          <ul class="feature-list emoji-list">
+            <li><img src="https://skillicons.dev/icons?i=windows" class="skill-icon-svg" alt="Windows">Windows Administration</li>
+            <li><img src="https://skillicons.dev/icons?i=linux" class="skill-icon-svg" alt="Linux">Linux Administration</li>
+            <li><i data-lucide="laptop" class="icon-emoji-3d"></i>Virtualization (VirtualBox)</li>
+            <li><i data-lucide="bar-chart-3" class="icon-emoji-3d"></i>System Monitoring</li>
+            <li><i data-lucide="users" class="icon-emoji-3d"></i>User Management</li>
           </ul>
         </div>
 
         <div class="skill-category fade-up delay-2">
-          <div class="skill-cat-label">Development & Automation</div>
-          <ul class="feature-list">
-            <li>Python</li>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>REST APIs</li>
-            <li>SQLite</li>
+          <div class="skill-cat-label"><i data-lucide="laptop" class="icon-emoji-3d"></i> Development & Automation</div>
+          <ul class="feature-list emoji-list">
+            <li><img src="https://skillicons.dev/icons?i=py" class="skill-icon-svg" alt="Python">Python</li>
+            <li><img src="https://skillicons.dev/icons?i=html" class="skill-icon-svg" alt="HTML">HTML</li>
+            <li><img src="https://skillicons.dev/icons?i=css" class="skill-icon-svg" alt="CSS">CSS</li>
+            <li><img src="https://skillicons.dev/icons?i=js" class="skill-icon-svg" alt="JavaScript">JavaScript</li>
+            <li><i data-lucide="link" class="icon-emoji-3d"></i>REST APIs</li>
+            <li><img src="https://skillicons.dev/icons?i=sqlite" class="skill-icon-svg" alt="SQLite">SQLite</li>
           </ul>
         </div>
 
         <div class="skill-category fade-up delay-3">
-          <div class="skill-cat-label">AI & Productivity</div>
-          <ul class="feature-list">
-            <li>Prompt Engineering</li>
-            <li>AI Workflow Automation</li>
-            <li>AI-Assisted Troubleshooting</li>
-            <li>API Integration</li>
+          <div class="skill-cat-label"><i data-lucide="bot" class="icon-emoji-3d"></i> AI & Productivity</div>
+          <ul class="feature-list emoji-list">
+            <li><i data-lucide="message-circle" class="icon-emoji-3d"></i>Prompt Engineering</li>
+            <li><i data-lucide="bot" class="icon-emoji-3d"></i>AI Workflow Automation</li>
+            <li><i data-lucide="search" class="icon-emoji-3d"></i>AI-Assisted Troubleshooting</li>
+            <li><i data-lucide="plug" class="icon-emoji-3d"></i>API Integration</li>
           </ul>
         </div>
 
@@ -1480,45 +1990,46 @@
 </section>
 
 <!-- ── CONTACT ── -->
-<section id="contact" style="background: var(--surface); border-top: 1px solid var(--border);">
+<section id="contact" class="section-3d-wrap" style="background: var(--surface); border-top: 1px solid var(--border);">
+  <canvas id="contact-3d" class="section-3d-canvas"></canvas>
   <div class="contact-wrap">
     <div>
-      <div class="section-label">Let's Work Together</div>
-      <h2 class="section-title">Let's Discuss Your Project</h2>
-      <p class="section-sub">Whether you need assistance with network infrastructure, IT support, systems integration, or AI-powered solutions, I'd be happy to discuss your project.</p>
+      <div class="section-label"><i data-lucide="handshake" class="icon-emoji-3d"></i> Let's Work Together</div>
+      <h2 class="section-title"><i data-lucide="message-circle" class="icon-emoji-3d"></i> Let's Discuss Your Project</h2>
+      <p class="section-sub"><i data-lucide="clipboard" class="icon-emoji-3d"></i> Whether you need assistance with network infrastructure, IT support, systems integration, or AI-powered solutions, I'd be happy to discuss your project.</p>
 
       <div class="avail-box">
-        <div class="avail-head">Open for Work</div>
+        <div class="avail-head"><i data-lucide="check-circle" class="icon-emoji-3d"></i> Open for Work</div>
         <p class="avail-text">
           Available for network infrastructure, IT support, systems integration, and AI-powered solutions. Remote-first, worldwide. Typical first response within 24 hours.
         </p>
       </div>
     </div>
     <div>
-      <div class="section-label" style="margin-bottom: 2rem;">Contact Information</div>
+      <div class="section-label" style="margin-bottom: 2rem;"><i data-lucide="mail" class="icon-emoji-3d"></i> Contact Information</div>
       <div class="contact-links">
         <a href="tel:0677667059" class="contact-link">
-          <span class="contact-link-label">Phone</span>
+          <span class="contact-link-label"><i data-lucide="phone" class="icon-emoji-3d"></i> Phone</span>
           <span class="contact-link-val">0677 667 059</span>
           <span class="contact-link-arrow">↗</span>
         </a>
         <a href="mailto:petercarlos897@gmail.com" class="contact-link">
-          <span class="contact-link-label">Email</span>
+          <span class="contact-link-label"><i data-lucide="mail" class="icon-emoji-3d"></i> Email</span>
           <span class="contact-link-val">petercarlos897@gmail.com</span>
           <span class="contact-link-arrow">↗</span>
         </a>
         <a href="https://github.com/yourhandle" target="_blank" class="contact-link">
-          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-label"><img src="https://skillicons.dev/icons?i=github" class="skill-icon-svg" alt="GitHub"> GitHub</span>
           <span class="contact-link-val">github.com/yourhandle</span>
           <span class="contact-link-arrow">↗</span>
         </a>
         <a href="https://linkedin.com/in/yourhandle" target="_blank" class="contact-link">
-          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-label"><img src="https://skillicons.dev/icons?i=linkedin" class="skill-icon-svg" alt="LinkedIn"> LinkedIn</span>
           <span class="contact-link-val">linkedin.com/in/yourhandle</span>
           <span class="contact-link-arrow">↗</span>
         </a>
         <a href="#" class="contact-link">
-          <span class="contact-link-label">Location</span>
+          <span class="contact-link-label"><i data-lucide="map-pin" class="icon-emoji-3d"></i> Location</span>
           <span class="contact-link-val">Dar es Salaam, Tanzania</span>
           <span class="contact-link-arrow">✓</span>
         </a>
@@ -1529,48 +2040,224 @@
 
 <!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-copy">© 2026 Portfolio. All rights reserved.</div>
-  <div class="footer-made">Built with <span>intention</span> · Network Engineering × IT × Strategy × AI</div>
+  <div class="footer-copy"><i data-lucide="copyright" class="icon-emoji-3d"></i> 2026 Portfolio. All rights reserved.</div>
+  <div class="footer-made"><i data-lucide="zap" class="icon-emoji-3d"></i> Built with <span>intention</span> · Network Engineering × IT × Strategy × AI</div>
 </footer>
 <script>
+  // ── MOBILE MENU ──
   function closeMobileMenu() {
-    document.querySelector('.nav-mobile').classList.remove('active');
-    document.querySelector('.nav-hamburger').classList.remove('active');
+    document.querySelector('.nav-mobile')?.classList.remove('active');
+    document.querySelector('.nav-hamburger')?.classList.remove('active');
   }
   function toggleMobileMenu() {
-    document.querySelector('.nav-mobile').classList.toggle('active');
-    document.querySelector('.nav-hamburger').classList.toggle('active');
+    document.querySelector('.nav-mobile')?.classList.toggle('active');
+    document.querySelector('.nav-hamburger')?.classList.toggle('active');
   }
-  function renderSystemInfo() {
-    const ua = navigator.userAgent || 'Unknown';
-    const platform = navigator.userAgentData?.platform || navigator.platform || 'Unknown';
-    const language = navigator.language || navigator.userLanguage || 'Unknown';
-    const hardware = navigator.hardwareConcurrency ? navigator.hardwareConcurrency + ' cores' : 'Unknown';
-    const os = navigator.userAgentData?.platform || navigator.platform || 'Unknown';
-    const browser = (() => {
-      if (ua.includes('Firefox/')) return 'Firefox';
-      if (ua.includes('Edg/')) return 'Microsoft Edge';
-      if (ua.includes('Chrome/') && !ua.includes('Edg/')) return 'Chrome';
-      if (ua.includes('Safari/') && !ua.includes('Chrome/')) return 'Safari';
-      if (ua.includes('Opera/') || ua.includes('OPR/')) return 'Opera';
-      return 'Unknown';
-    })();
-    const screenInfo = `${window.screen.width}×${window.screen.height} (${window.devicePixelRatio || 1}x)`;
-    const cookies = navigator.cookieEnabled ? 'Enabled' : 'Disabled';
-    const connection = navigator.connection ? `${navigator.connection.effectiveType || 'N/A'} (${navigator.connection.downlink || 'N/A'} Mbps)` : 'Unknown';
 
-    document.getElementById('system-platform').textContent = platform;
-    document.getElementById('system-useragent').textContent = ua;
-    document.getElementById('system-language').textContent = language;
-    document.getElementById('system-hardware').textContent = hardware;
-    document.getElementById('system-os').textContent = os;
-    document.getElementById('system-browser').textContent = browser;
-    document.getElementById('system-screen').textContent = screenInfo;
-    document.getElementById('system-cookies').textContent = cookies;
-    document.getElementById('system-connection').textContent = connection;
+  // ── CUSTOM CURSOR ──
+  (function initCursor() {
+    if ('ontouchstart' in window) return;
+    const dot = document.createElement('div');
+    dot.className = 'cursor-dot';
+    const ring = document.createElement('div');
+    ring.className = 'cursor-ring';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    let hidden = false;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top = my + 'px';
+      if (hidden) {
+        dot.style.opacity = '1';
+        ring.style.opacity = '1';
+        hidden = false;
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+      hidden = true;
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Hover targets
+    const targets = document.querySelectorAll(
+      'a, button, .btn-primary, .btn-ghost, .nav-cta, .service-card, .proj-card, .contact-link, .approach-card, .nav-logo, .stack-pill, .tag, .status-pill'
+    );
+    targets.forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+    });
+
+    // Click effect
+    document.addEventListener('mousedown', () => ring.classList.add('click'));
+    document.addEventListener('mouseup', () => ring.classList.remove('click'));
+  })();
+
+  // ── MAGNETIC BUTTONS ──
+  (function initMagnetic() {
+    if ('ontouchstart' in window) return;
+    const btns = document.querySelectorAll('.btn-primary, .btn-ghost');
+    btns.forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+        btn.style.transition = 'transform 0.3s ease';
+        setTimeout(() => { btn.style.transition = ''; }, 300);
+      });
+    });
+  })();
+
+  // ── 3D TILT ON CARDS ──
+  (function initTilt() {
+    if ('ontouchstart' in window) return;
+    const cards = document.querySelectorAll('.service-card, .proj-card, .approach-card');
+    cards.forEach(card => {
+      card.classList.add('tilt-card');
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(1200px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.transition = 'transform 0.4s ease';
+        setTimeout(() => { card.style.transition = ''; }, 400);
+      });
+    });
+  })();
+
+  // ── tsPARTICLES FIREFLY ──
+  (function initParticles() {
+    if (typeof tsParticles === 'undefined') return;
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+    tsParticles.load('particle-canvas', {
+      fpsLimit: 60,
+      particles: {
+        number: { value: 40, density: { enable: true, width: 800 } },
+        color: { value: '#E07B30' },
+        shape: { type: 'circle' },
+        opacity: {
+          value: 0.25, random: true,
+          animation: { enable: true, speed: 0.8, minimumValue: 0.05, sync: false }
+        },
+        size: {
+          value: { min: 1, max: 3.5 }, random: true,
+          animation: { enable: true, speed: 1.5, minimumValue: 0.5, sync: false }
+        },
+        move: {
+          enable: true, speed: 1.2, direction: 'none', random: true,
+          straight: false, outModes: { default: 'bounce' },
+          attract: { enable: true, rotateX: 600, rotateY: 1200 }
+        },
+        links: {
+          enable: true, distance: 150, color: '#E07B30',
+          opacity: 0.08, width: 1, consent: false
+        }
+      },
+      interactivity: {
+        events: {
+          onHover: { enable: true, mode: 'grab' },
+          onClick: { enable: true, mode: 'push' }
+        },
+        modes: {
+          grab: { distance: 120, links: { opacity: 0.2 } },
+          push: { quantity: 3 }
+        }
+      },
+      background: { color: 'transparent' },
+      detectRetina: true
+    });
+  })();
+
+  // ── ANIMATED SKILL BARS ──
+  (function initSkillBars() {
+    const categories = document.querySelectorAll('.skill-category .feature-list');
+    categories.forEach(list => {
+      const items = list.querySelectorAll('li');
+      items.forEach((item, i) => {
+        // Add a progress bar under each skill
+        const wrap = document.createElement('div');
+        wrap.className = 'skill-progress-wrap';
+        const fill = document.createElement('div');
+        fill.className = 'skill-progress-fill';
+        fill.dataset.pct = Math.floor(Math.random() * 20) + 78; // 78-98%
+        wrap.appendChild(fill);
+        item.appendChild(wrap);
+
+        // Animate on scroll into view
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              setTimeout(() => {
+                fill.style.width = fill.dataset.pct + '%';
+              }, i * 100);
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.4 });
+        obs.observe(item);
+      });
+    });
+  })();
+
+  // ── COUNT-UP STATS ANIMATION ──
+  (function initCountUp() {
+    const stats = document.querySelectorAll('.stat-num');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target;
+          const text = el.textContent;
+          const num = parseInt(text.replace(/[^0-9]/g, '')) || 0;
+          const suffix = text.replace(/[0-9]/g, '');
+          const hasLeadingZero = text.startsWith('0');
+          const padLen = hasLeadingZero ? 2 : 0;
+          let current = 0;
+          const duration = 1200;
+          const step = Math.max(1, Math.floor(num / 30));
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= num) {
+              current = num;
+              clearInterval(timer);
+            }
+            el.textContent = (padLen ? String(current).padStart(padLen, '0') : current) + suffix;
+          }, duration / (num / step));
+          obs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    stats.forEach(s => obs.observe(s));
+  })();
+
+  // ── LUCIDE ICONS ──
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
   }
-  window.addEventListener('load', renderSystemInfo);
-  lucide.createIcons();
+
+  // ── SCROLL FADE-IN OBSERVER ──
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1580,6 +2267,637 @@
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ── THEME TOGGLE ──
+  (function initThemeToggle() {
+    const toggle = document.getElementById('themeToggle');
+    if (!toggle) return;
+
+    const html = document.documentElement;
+
+    // Update dynamic elements when theme changes
+    function updateDynamicColors(theme) {
+      // Update tsParticles if loaded — gracefully handle any API differences
+      try {
+        if (window.tsParticles) {
+          const containers = window.tsParticles.dom();
+          if (containers && containers.length) {
+            const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#E07B30';
+            const linksColor = getComputedStyle(document.documentElement).getPropertyValue('--tsparticles-links').trim() || accent;
+            containers.forEach(c => {
+              if (c.options && c.options.particles) {
+                if (c.options.particles.color) c.options.particles.color.value = accent;
+                if (c.options.particles.links) c.options.particles.links.color = linksColor;
+                c.refresh();
+              }
+            });
+          }
+        }
+      } catch(e) {
+        // Theme toggle shouldn't break if tsParticles update fails
+        console.warn('tsParticles theme update skipped:', e.message);
+      }
+    }
+
+    function toggleTheme() {
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('portfolio-theme', next);
+      updateDynamicColors(next);
+
+      // Update meta theme-color
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) {
+        const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+        metaTheme.content = bg || (next === 'dark' ? '#080808' : '#f8f6f0');
+      }
+
+      // Refresh GSAP ScrollTrigger in case layout shifted
+      if (window.ScrollTrigger) {
+        ScrollTrigger.refresh();
+      }
+    }
+
+    toggle.addEventListener('click', toggleTheme);
+
+    // ── KEYBOARD SHORTCUT: T or Ctrl+K / Cmd+K ──
+    document.addEventListener('keydown', (e) => {
+      // Skip if user is typing in an input/textarea/contenteditable
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+
+      const isTK = e.key === 't' || e.key === 'T';
+      const isK = e.key === 'k' || e.key === 'K';
+      const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+
+      if (isTK || (isK && isCtrlOrCmd)) {
+        e.preventDefault();
+        toggleTheme();
+
+        // Brief flash highlight on toggle button for feedback
+        toggle.style.transform = 'scale(0.88)';
+        toggle.style.borderColor = 'var(--accent)';
+        setTimeout(() => {
+          toggle.style.transform = '';
+          toggle.style.borderColor = '';
+        }, 200);
+      }
+    });
+
+    // Add meta theme-color if not present
+    if (!document.querySelector('meta[name="theme-color"]')) {
+      const meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      meta.content = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#080808';
+      document.head.appendChild(meta);
+    }
+
+    // Update tsParticles initially if already loaded
+    setTimeout(() => updateDynamicColors(html.getAttribute('data-theme')), 500);
+  })();
+
+  // ── LENIS SMOOTH SCROLL ──
+  (function initLenis() {
+    if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
+
+    const lenis = new Lenis({
+      autoRaf: false,
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+    // Store lenis instance for anchor link navigation
+    window.__lenis = lenis;
+
+    // Use Lenis for anchor link scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          lenis.scrollTo(target, { offset: -80, duration: 1.4 });
+          closeMobileMenu();
+        }
+      });
+    });
+  })();
+
+  // ── GSAP SCROLLTRIGGER ANIMATIONS ──
+  (function initScrollAnimations() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    // Register ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Only run on desktop
+    const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+
+    // 1. Section titles — slide in from left
+    document.querySelectorAll('.section-title').forEach((title, i) => {
+      if (isMobile) {
+        title.style.opacity = '1';
+        title.style.transform = 'none';
+        return;
+      }
+      gsap.fromTo(title,
+        { opacity: 0, x: -40 },
+        {
+          opacity: 1, x: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: title,
+            start: 'top 82%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // 2. Section subs — slide in from right
+    document.querySelectorAll('.section-sub').forEach((sub) => {
+      if (isMobile) {
+        sub.style.opacity = '1';
+        sub.style.transform = 'none';
+        return;
+      }
+      gsap.fromTo(sub,
+        { opacity: 0, x: 40 },
+        {
+          opacity: 1, x: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sub,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // 3. Service cards — stagger in
+    const serviceCards = document.querySelectorAll('.service-card');
+    if (serviceCards.length && !isMobile) {
+      gsap.fromTo(serviceCards,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.services-grid',
+            start: 'top 78%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    }
+
+    // 4. Approach cards — stagger in
+    const approachCards = document.querySelectorAll('.approach-card');
+    if (approachCards.length && !isMobile) {
+      gsap.fromTo(approachCards,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.7,
+          stagger: 0.15,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.approach-cards',
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    }
+
+    // 5. Project featured — scale reveal
+    const featured = document.querySelector('.project-featured');
+    if (featured && !isMobile) {
+      gsap.fromTo(featured,
+        { opacity: 0, scale: 0.95 },
+        {
+          opacity: 1, scale: 1,
+          duration: 1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: featured,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    }
+
+    // 6. Contact links — stagger in
+    const contactLinks = document.querySelectorAll('.contact-link');
+    if (contactLinks.length && !isMobile) {
+      gsap.fromTo(contactLinks,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1, x: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: '.contact-links',
+            start: 'top 82%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    }
+
+    // 7. Hero stats — subtle parallax on scroll
+    const heroStats = document.querySelector('.hero-stats');
+    if (heroStats && !isMobile) {
+      gsap.fromTo(heroStats,
+        { y: 0 },
+        {
+          y: -30,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1.5
+          }
+        }
+      );
+    }
+
+    // 8. Nav bar — change opacity on scroll
+    const nav = document.querySelector('nav');
+    if (nav) {
+      gsap.to(nav, {
+        borderBottomColor: 'rgba(224,123,48,0.15)',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top -80%',
+          end: 'top -120%',
+          scrub: 1
+        }
+      });
+    }
+
+    // Refresh ScrollTrigger on load
+    ScrollTrigger.refresh();
+  })();
 </script>
+
+<!-- ── THREE.JS 3D BACKGROUND ── -->
+<script type="module">
+  import * as THREE from 'three';
+
+  const canvas = document.getElementById('three-canvas');
+  if (!canvas) {
+    console.warn('Three.js canvas not found — skipping 3D scene');
+  } else {
+
+  const heroRight = canvas.closest('.hero-right');
+  if (!heroRight) { console.warn('Three.js hero-right container not found'); } else {
+
+  // Scene
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, heroRight.offsetWidth / heroRight.offsetHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: true
+  });
+  renderer.setSize(heroRight.offsetWidth, heroRight.offsetHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Torus Knot — network topology inspired shape
+  const geometry = new THREE.TorusKnotGeometry(1.4, 0.4, 140, 20);
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xE07B30,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.35
+  });
+  const knot = new THREE.Mesh(geometry, material);
+  scene.add(knot);
+
+  // Secondary inner knot for depth
+  const innerGeo = new THREE.TorusKnotGeometry(0.9, 0.2, 80, 12);
+  const innerMat = new THREE.MeshBasicMaterial({
+    color: 0xf5a35c,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.2
+  });
+  const innerKnot = new THREE.Mesh(innerGeo, innerMat);
+  scene.add(innerKnot);
+
+  // Particles orbiting
+  const particleCount = 200;
+  const particleGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    const r = 2.2 + Math.random() * 1.5;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.random() * Math.PI * 2;
+    positions[i] = r * Math.sin(theta) * Math.cos(phi);
+    positions[i+1] = r * Math.sin(theta) * Math.sin(phi);
+    positions[i+2] = r * Math.cos(theta);
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({
+    color: 0xE07B30,
+    size: 0.03,
+    transparent: true,
+    opacity: 0.4
+  });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  scene.add(particles);
+
+  camera.position.z = 3.8;
+
+  // Mouse tracking for subtle parallax
+  let mouseX = 0, mouseY = 0;
+  let targetX = 0, targetY = 0;
+
+  heroRight.addEventListener('mousemove', e => {
+    const rect = heroRight.getBoundingClientRect();
+    targetX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    targetY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+  });
+
+  heroRight.addEventListener('mouseleave', () => {
+    targetX = 0;
+    targetY = 0;
+  });
+
+  // Animation loop
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Pause rendering when hero-right is hidden (mobile breakpoint)
+    if (heroRight.offsetParent === null) return;
+
+    // Smooth mouse following
+    mouseX += (targetX - mouseX) * 0.05;
+    mouseY += (targetY - mouseY) * 0.05;
+
+    knot.rotation.x += 0.004;
+    knot.rotation.y += 0.007;
+    innerKnot.rotation.x -= 0.006;
+    innerKnot.rotation.y += 0.005;
+    particles.rotation.y += 0.001;
+    particles.rotation.x += 0.0005;
+
+    // Subtle parallax offset
+    knot.position.x = mouseX * 0.15;
+    knot.position.y = mouseY * 0.15;
+    innerKnot.position.x = mouseX * 0.1;
+    innerKnot.position.y = mouseY * 0.1;
+
+    renderer.render(scene, camera);
+  }
+
+  // Resize handler
+  function resize() {
+    const w = heroRight.offsetWidth;
+    const h = heroRight.offsetHeight;
+    if (w === 0 || h === 0) return;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+
+  window.addEventListener('resize', resize);
+
+  animate();
+  }
+  }
+</script>
+
+<!-- ── THREE.JS SECTION SCENES ── -->
+<script type="module">
+  import * as THREE from 'three';
+
+  function initSectionScene(canvasId, containerSelector, createObjects) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const container = canvas.closest(containerSelector);
+    if (!container) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const objs = createObjects(scene);
+
+    camera.position.z = 4;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (container.offsetParent === null) return;
+      if (objs.update) objs.update();
+      renderer.render(scene, camera);
+    }
+
+    function resize() {
+      const w = container.offsetWidth;
+      const h = container.offsetHeight;
+      if (w === 0 || h === 0) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+
+    window.addEventListener('resize', resize);
+    animate();
+  }
+
+  // Services — Icosahedron (multi-faceted services)
+  initSectionScene('services-3d', '#services', (scene) => {
+    const icoGeo = new THREE.IcosahedronGeometry(1.6, 0);
+    const icoMat = new THREE.MeshBasicMaterial({
+      color: 0xE07B30,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.3
+    });
+    const ico = new THREE.Mesh(icoGeo, icoMat);
+    scene.add(ico);
+
+    const innerGeo = new THREE.IcosahedronGeometry(0.9, 1);
+    const innerMat = new THREE.MeshBasicMaterial({
+      color: 0xf5a35c,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.15
+    });
+    const inner = new THREE.Mesh(innerGeo, innerMat);
+    scene.add(inner);
+
+    const ringCount = 80;
+    const ringGeo = new THREE.BufferGeometry();
+    const ringPos = new Float32Array(ringCount * 3);
+    for (let i = 0; i < ringCount; i++) {
+      const angle = (i / ringCount) * Math.PI * 2;
+      const r = 2.0 + Math.random() * 1.2;
+      ringPos[i*3] = Math.cos(angle) * r;
+      ringPos[i*3+1] = Math.sin(angle) * r * 0.6;
+      ringPos[i*3+2] = (Math.random() - 0.5) * 1.5;
+    }
+    ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPos, 3));
+    const ringMat = new THREE.PointsMaterial({ color: 0xE07B30, size: 0.04, transparent: true, opacity: 0.3 });
+    const ringPoints = new THREE.Points(ringGeo, ringMat);
+    scene.add(ringPoints);
+
+    return {
+      update: () => {
+        ico.rotation.x += 0.003;
+        ico.rotation.y += 0.005;
+        inner.rotation.x -= 0.004;
+        inner.rotation.y += 0.003;
+        ringPoints.rotation.y += 0.002;
+        ringPoints.rotation.x += 0.001;
+      }
+    };
+  });
+
+  // Network — Octahedron with orbiting ring (network topology)
+  initSectionScene('network-3d', '#network', (scene) => {
+    const netGeo = new THREE.OctahedronGeometry(1.5);
+    const netMat = new THREE.MeshBasicMaterial({
+      color: 0xE07B30,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.25
+    });
+    const net = new THREE.Mesh(netGeo, netMat);
+    scene.add(net);
+
+    const innerNetGeo = new THREE.OctahedronGeometry(0.8);
+    const innerNetMat = new THREE.MeshBasicMaterial({
+      color: 0xf5a35c,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.12
+    });
+    const innerNet = new THREE.Mesh(innerNetGeo, innerNetMat);
+    scene.add(innerNet);
+
+    // Orbital ring particles (representing network nodes)
+    const nodeCount = 120;
+    const nodeGeo = new THREE.BufferGeometry();
+    const nodePos = new Float32Array(nodeCount * 3);
+    for (let i = 0; i < nodeCount; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 2.0 + Math.random() * 1.8;
+      nodePos[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      nodePos[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+      nodePos[i*3+2] = r * Math.cos(phi);
+    }
+    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePos, 3));
+    const nodeMat = new THREE.PointsMaterial({ color: 0xE07B30, size: 0.035, transparent: true, opacity: 0.35 });
+    const nodes = new THREE.Points(nodeGeo, nodeMat);
+    scene.add(nodes);
+
+    // Connection lines (simulating network links)
+    const linkCount = 60;
+    const linkGeo = new THREE.BufferGeometry();
+    const linkPositions = [];
+    for (let i = 0; i < linkCount; i++) {
+      const a = Math.random() * nodeCount | 0;
+      const b = Math.random() * nodeCount | 0;
+      if (a === b) continue;
+      const idxA = a * 3;
+      const idxB = b * 3;
+      linkPositions.push(nodePos[idxA], nodePos[idxA+1], nodePos[idxA+2]);
+      linkPositions.push(nodePos[idxB], nodePos[idxB+1], nodePos[idxB+2]);
+    }
+    linkGeo.setAttribute('position', new THREE.Float32BufferAttribute(linkPositions, 3));
+    const linkMat = new THREE.LineBasicMaterial({ color: 0xE07B30, transparent: true, opacity: 0.06 });
+    const links = new THREE.LineSegments(linkGeo, linkMat);
+    scene.add(links);
+
+    return {
+      update: () => {
+        net.rotation.x += 0.004;
+        net.rotation.y += 0.006;
+        innerNet.rotation.x -= 0.003;
+        innerNet.rotation.y += 0.004;
+        nodes.rotation.y += 0.0015;
+        nodes.rotation.x += 0.0008;
+        links.rotation.y += 0.0015;
+        links.rotation.x += 0.0008;
+      }
+    };
+  });
+
+  // Contact — Sphere with communication rings
+  initSectionScene('contact-3d', '#contact', (scene) => {
+    const sphereGeo = new THREE.SphereGeometry(1.4, 24, 16);
+    const sphereMat = new THREE.MeshBasicMaterial({
+      color: 0xE07B30,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.2
+    });
+    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+    scene.add(sphere);
+
+    const innerSphereGeo = new THREE.SphereGeometry(0.7, 16, 10);
+    const innerSphereMat = new THREE.MeshBasicMaterial({
+      color: 0xf5a35c,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.1
+    });
+    const innerSphere = new THREE.Mesh(innerSphereGeo, innerSphereMat);
+    scene.add(innerSphere);
+
+    // Communication ring particles
+    const commCount = 150;
+    const commGeo = new THREE.BufferGeometry();
+    const commPos = new Float32Array(commCount * 3);
+    for (let i = 0; i < commCount; i++) {
+      const angle = (i / commCount) * Math.PI * 2;
+      const tilt = Math.random() * Math.PI;
+      const r = 1.8 + Math.random() * 1.5;
+      commPos[i*3] = r * Math.cos(angle) * Math.sin(tilt);
+      commPos[i*3+1] = r * Math.sin(angle) * Math.sin(tilt);
+      commPos[i*3+2] = r * Math.cos(tilt);
+    }
+    commGeo.setAttribute('position', new THREE.BufferAttribute(commPos, 3));
+    const commMat = new THREE.PointsMaterial({ color: 0xE07B30, size: 0.04, transparent: true, opacity: 0.25 });
+    const commPoints = new THREE.Points(commGeo, commMat);
+    scene.add(commPoints);
+
+    return {
+      update: () => {
+        sphere.rotation.x += 0.002;
+        sphere.rotation.y += 0.004;
+        innerSphere.rotation.x -= 0.003;
+        innerSphere.rotation.y += 0.002;
+        commPoints.rotation.y += 0.001;
+        commPoints.rotation.x += 0.0005;
+      }
+    };
+  });
+</script>
+
 </body>
 </html>
