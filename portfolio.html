@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Network Engineering · IT Support · AI Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --bg: #080808;
+    --surface: #111111;
+    --surface2: #181818;
+    --border: rgba(255,255,255,0.07);
+    --accent: #E07B30;
+    --accent2: #c96820;
+    --text: #F0EDE6;
+    --muted: #666660;
+    --subtle: #999990;
+    --green: #3DCC85;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    background: rgba(8,8,8,0.85);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── 3D ICON STYLING ── */
+  .icon-3d {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: all 0.25s ease;
+    color: var(--accent);
+  }
+  .icon-3d:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(224,123,48,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+    border-color: rgba(224,123,48,0.3);
+  }
+  .icon-3d svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.5;
+  }
+  .icon-3d-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+    transition: all 0.2s ease;
+    color: var(--accent);
+  }
+  .icon-3d-sm svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.5;
+  }
+  .icon-3d-sm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(224,123,48,0.15);
+    border-color: rgba(224,123,48,0.25);
+  }
+  .icon-3d-lg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: all 0.25s ease;
+    color: var(--accent);
+  }
+  .icon-3d-lg svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.5;
+  }
+  .icon-3d-lg:hover {
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 8px 24px rgba(224,123,48,0.25);
+    border-color: rgba(224,123,48,0.35);
+  }
+  .icon-inline {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    margin-right: 2px;
+  }
+  .icon-inline svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.5;
+  }
+  .stat-icon-3d {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    color: var(--accent);
+    transition: all 0.25s ease;
+    margin-bottom: 14px;
+  }
+  .stat-icon-3d svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.5;
+  }
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.5rem 1.25rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,123,48,0.07) 0%, transparent 70%);
+    top: 10%; left: -10%;
+    pointer-events: none;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem 5rem 4rem;
+    position: relative;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--subtle);
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn-ghost {
+    color: var(--subtle);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--subtle); color: var(--text); }
+  .hero-stats {
+    display: flex; gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-visual {
+    width: 100%; height: 100%;
+    background: var(--surface);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+  }
+  .hero-card-float {
+    position: relative;
+    z-index: 2;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    width: 340px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .hero-card-float .card-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .terminal-line {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--subtle);
+    margin-bottom: 0.4rem;
+    display: flex; gap: 0.5rem;
+  }
+  .terminal-line .prompt { color: var(--green); }
+  .terminal-line .cmd { color: var(--text); }
+  .terminal-line .out { color: var(--muted); font-style: italic; }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(61,204,133,0.1);
+    border: 1px solid rgba(61,204,133,0.25);
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.75rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+  .status-pill::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    color: var(--subtle);
+    max-width: 600px;
+    margin-bottom: 4rem;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ── SERVICES ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--bg);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: background 0.3s;
+    overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .service-card:hover { background: var(--surface); }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-icon {
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 18px;
+  }
+  .service-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 1.5;
+    color: var(--accent);
+  }
+  .service-name {
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .service-desc {
+    font-size: 0.875rem;
+    color: var(--subtle);
+    line-height: 1.7;
+  }
+  .service-tags {
+    margin-top: 1.5rem;
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+  }
+
+  /* ── FEATURED PROJECT ── */
+  .project-featured {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .project-featured-left {
+    padding: 3.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .project-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(224,123,48,0.1);
+    border: 1px solid rgba(224,123,48,0.3);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.75rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .project-title {
+    font-family: var(--display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .project-desc {
+    color: var(--subtle);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .project-stack {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .stack-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    border: 1px solid rgba(224,123,48,0.3);
+    padding: 0.3rem 0.75rem;
+    text-transform: uppercase;
+  }
+  .project-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .metric { text-align: center; }
+  .metric-val {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .metric-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .project-featured-right {
+    background: var(--surface2);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-featured-right::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(224,123,48,0.06) 0%, transparent 70%);
+    top: -50px; right: -80px;
+  }
+  .steps-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .step-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .step-item:last-child { border-bottom: none; margin-bottom: 0; }
+  .step-num {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: rgba(224,123,48,0.2);
+    min-width: 2rem;
+    line-height: 1;
+  }
+  .step-content {}
+  .step-name {
+    font-family: var(--display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .step-desc {
+    font-size: 0.82rem;
+    color: var(--subtle);
+    line-height: 1.6;
+  }
+  .step-tech {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    margin-top: 0.4rem;
+    opacity: 0.8;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .code-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .dot-red { background: #FF5F57; }
+  .dot-yellow { background: #FEBC2E; }
+  .dot-green { background: #28C840; }
+  .code-body {
+    padding: 1.5rem;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+  .code-body .kw { color: #E07B30; }
+  .code-body .fn { color: #7ECDC2; }
+  .code-body .st { color: #98C379; }
+  .code-body .cm { color: #555; font-style: italic; }
+  .code-body .num { color: #D19A66; }
+  .code-body .var { color: #C678DD; }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .about-text { color: var(--subtle); font-size: 1rem; line-height: 1.9; }
+  .about-text p + p { margin-top: 1.25rem; }
+  .about-text strong { color: var(--text); font-weight: 500; }
+  .approach-cards {
+    display: flex; flex-direction: column; gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  .approach-card {
+    display: flex; gap: 1.25rem; align-items: flex-start;
+    background: var(--bg);
+    padding: 1.25rem 1.5rem;
+    transition: background 0.2s;
+  }
+  .approach-card:hover { background: var(--surface); }
+  .approach-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    margin-top: 2px;
+    color: var(--accent);
+  }
+  .approach-icon svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.5;
+  }
+  .approach-name {
+    font-family: var(--display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .approach-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .about-right {}
+  .skills-section { }
+  .skill-category {
+    margin-bottom: 2.5rem;
+  }
+  .skill-cat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-bars { display: flex; flex-direction: column; gap: 0.75rem; }
+  .skill-row {
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .skill-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--subtle);
+    min-width: 160px;
+  }
+  .skill-bar {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    animation: grow 1.5s ease-out forwards;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  @keyframes grow { to { transform: scaleX(1); } }
+  .skill-pct {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    min-width: 30px;
+    text-align: right;
+  }
+
+  /* ── PROJECTS GRID ── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .proj-card {
+    background: var(--bg);
+    padding: 2rem;
+    position: relative;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .proj-card:hover { background: var(--surface); }
+  .proj-num {
+    font-family: var(--display);
+    font-size: 3rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.04);
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    line-height: 1;
+  }
+  .proj-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .proj-status.active { color: var(--green); }
+  .proj-status.wip { color: var(--accent); }
+  .proj-status.planned { color: var(--muted); }
+  .proj-name {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    line-height: 1.25;
+  }
+  .proj-desc {
+    font-size: 0.83rem;
+    color: var(--subtle);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .proj-tech {
+    display: flex; flex-wrap: wrap; gap: 0.35rem;
+  }
+  .proj-tech span {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .tl-item {
+    position: relative;
+    padding: 0 0 3rem 2.5rem;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -4.5px; top: 4px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .tl-title {
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .tl-desc {
+    font-size: 0.875rem;
+    color: var(--subtle);
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 1px; margin-top: 2rem; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    background: var(--surface);
+    margin-bottom: 1px;
+  }
+  .contact-link:hover {
+    background: var(--surface2);
+    border-color: rgba(224,123,48,0.3);
+  }
+  .contact-link-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--subtle);
+  }
+  .contact-link-val {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+  .contact-link-arrow {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .avail-box {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: var(--surface);
+    margin-top: 2rem;
+  }
+  .avail-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .avail-head::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .avail-text {
+    font-size: 0.9rem;
+    color: var(--subtle);
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .footer-made {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .footer-made span { color: var(--accent); }
+
+  /* ── FADE-IN ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+
+  @media (max-width: 1024px) {
+    nav { padding: 1.25rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 2rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    #network .project-featured { grid-template-columns: 1fr; }
+    #network .project-featured-right { border-left: none; border-top: 1px solid var(--border); }
+    .project-featured { grid-template-columns: 1fr; }
+    .project-featured-right { border-left: none; border-top: 1px solid var(--border); }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+    .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">[ Portfolio.v1 ]</div>
+  <ul class="nav-links">
+    <li><a    href="#services">Services</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me →</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div style="font-size: 24px; font-weight: 700; color: var(--accent); margin-bottom: 1rem; font-family: var(--display);">Carlos Peter</div>
+    <div class="hero-tag">Simplicity Saves Strength</div>
+    <h1 class="hero-title">
+      Network Engineer<br>
+      + IT Strategy<br>
+      + <em>AI Solutions</em>
+    </h1>
+    <p class="hero-sub">
+      Most network engineers can't configure a firewall <em>and</em> deploy an AI assistant.
+      Most strategists can't design a VLAN <em>and</em> build a Python API. I do all four —
+      and I use AI to bridge the gap between broken infrastructure, unclear strategy, and real business outcomes.
+    </p>
+    <div class="hero-actions">
+      <a href="#project" class="btn-primary">See It In Action →</a>
+      <a href="#contact" class="btn-ghost">Let's Talk</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">02+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Projects Built</div>
+      </div>
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Clients Served</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-card-float">
+        <div class="card-label">// AI Troubleshooter — Live</div>
+        <div class="terminal-line">
+          <span class="prompt">$</span>
+          <span class="cmd">diagnose --system linux --issue "high cpu"</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Scanning processes...</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Querying AI engine...</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Root cause: kworker/0:1</span>
+        </div>
+        <div class="terminal-line">
+          <span class="out">→ Fix: sudo systemctl restart...</span>
+        </div>
+        <div class="status-pill">System Resolved</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="section-label">What I Do</div>
+  <h2 class="section-title">The Overlap Nobody Fills</h2>
+  <p class="section-sub">Developers solve the technical. Consultants solve the strategic. I sit at the intersection — and that's exactly where the hard problems live.</p>
+  <div class="services-grid">
+    <div class="service-card fade-up">
+      <div class="service-icon"><i data-lucide="monitor"></i></div>
+      <div class="service-name">IT Diagnosis & Recovery</div>
+      <div class="service-desc">When systems fail, businesses bleed time and money. I trace root causes fast — across Windows, Linux, VMs, and ERP systems — and document the fix so it doesn't happen twice.</div>
+      <div class="service-tags">
+        <span class="tag">Windows</span>
+        <span class="tag">Linux</span>
+        <span class="tag">VirtualBox</span>
+        <span class="tag">Odoo</span>
+      </div>
+    </div>
+    <div class="service-card fade-up delay-1">
+      <div class="service-icon"><i data-lucide="bot"></i></div>
+      <div class="service-name">AI Tools That Actually Ship</div>
+      <div class="service-desc">Not chatbot demos. Real tools: AI-powered diagnostic assistants, automated reporting pipelines, and smart workflows that eliminate the repetitive work draining your team's hours.</div>
+      <div class="service-tags">
+        <span class="tag">Prompt Eng.</span>
+        <span class="tag">Claude API</span>
+        <span class="tag">Automation</span>
+      </div>
+    </div>
+    <div class="service-card fade-up delay-2">
+      <div class="service-icon"><i data-lucide="bar-chart-3"></i></div>
+      <div class="service-name">Digital Market Strategy</div>
+      <div class="service-desc">I research what the market actually wants, find where your product fits, and build the positioning that makes buyers stop scrolling. Backed by data, not guesswork.</div>
+      <div class="service-tags">
+        <span class="tag">Research</span>
+        <span class="tag">Positioning</span>
+        <span class="tag">Marketplace</span>
+      </div>
+    </div>
+    <div class="service-card fade-up delay-3">
+      <div class="service-icon"><i data-lucide="settings-2"></i></div>
+      <div class="service-name">Systems That Talk to Each Other</div>
+      <div class="service-desc">Siloed tools and manual data transfers kill efficiency. I connect your systems — APIs, databases, dashboards — into a single workflow using Python, JavaScript, and lightweight automation.</div>
+      <div class="service-tags">
+        <span class="tag">Python</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">APIs</span>
+        <span class="tag">IoT</span>
+      </div>
+    </div>
+    <div class="service-card fade-up delay-4">
+      <div class="service-icon"><i data-lucide="network"></i></div>
+      <div class="service-name">Network Engineering & Infrastructure</div>
+      <div class="service-desc">Design, configure, and secure wired/wireless networks — VLAN segmentation, inter-VLAN routing, DHCP/DNS architecture, firewall policies, site-to-site VPNs, and link aggregation. I build reliable network foundations that keep your business connected and protected.</div>
+      <div class="service-tags">
+        <span class="tag">Cisco</span>
+        <span class="tag">MikroTik</span>
+        <span class="tag">VLAN</span>
+        <span class="tag">Firewall</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NETWORK ENGINEERING ── -->
+<section id="network">
+  <div class="section-label">Network Engineering</div>
+  <h2 class="section-title">Infrastructure I Design & Manage</h2>
+  <p class="section-sub">Networks are the nervous system of any organization. I design, configure, and troubleshoot them — from small office setups to multi-site campus networks.</p>
+
+  <div class="project-featured fade-up">
+    <div class="project-featured-left">
+      <div class="project-badge"><i data-lucide="network" style="width:12px;height:12px;stroke-width:1.5;"></i> Core Competencies</div>
+      <h3 class="project-title">Routing · Switching ·<br>Security · Wireless</h3>
+      <p class="project-desc">
+        Whether it's setting up a MikroTik router from scratch, segmenting a flat network into secure VLANs, deploying DHCP/DNS servers on Linux, or hardening firewall rules against intrusion — I bring a hands-on, vendor-agnostic approach. I've configured Cisco switches, deployed RouterOS solutions, and managed VirtualBox-based virtual networking for lab and production environments alike.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">Cisco IOS</span>
+        <span class="stack-pill">MikroTik RouterOS</span>
+        <span class="stack-pill">VLAN / Trunking</span>
+        <span class="stack-pill">DHCP / DNS</span>
+        <span class="stack-pill">Firewall / NAT</span>
+      </div>
+      <div class="project-metrics">
+        <div class="metric">
+          <span class="metric-val">10+</span>
+          <span class="metric-label">Networks Configured</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">5</span>
+          <span class="metric-label">Sites Designed</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">99.9%</span>
+          <span class="metric-label">Uptime Target</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-featured-right">
+      <div class="steps-title">// Common Network Tasks</div>
+
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-name">Network Design & Segmentation</div>
+          <div class="step-desc">Analyze traffic patterns, design VLAN topology, assign subnets, and configure inter-VLAN routing with access control lists between segments.</div>
+          <div class="step-tech">→ Cisco · MikroTik · Subnetting · VLSM</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-name">Router & Firewall Configuration</div>
+          <div class="step-desc">Set up static/dynamic routing, NAT/PAT, port forwarding, firewall rules, and site-to-site VPNs. Hardening against common attack vectors included.</div>
+          <div class="step-tech">→ RouterOS · iptables · IPSec · WireGuard</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-name">DHCP, DNS & Network Services</div>
+          <div class="step-desc">Deploy and manage DHCP servers (failover pools, reservations), DNS forwarders and caching resolvers, and NTP synchronization across the network.</div>
+          <div class="step-tech">→ Linux · dnsmasq · bind9 · dhcpd</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-name">Monitoring & Troubleshooting</div>
+          <div class="step-desc">Identify root causes of network drops, high latency, packet loss, and bandwidth saturation using ping, traceroute, tcpdump, and interface statistics.</div>
+          <div class="step-tech">→ Wireshark · MTR · SNMP · syslog</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-name">Wireless & Site Expansion</div>
+          <div class="step-desc">Plan wireless coverage, configure access points, bridge remote buildings, and extend networks across multiple physical sites with VPN backbones.</div>
+          <div class="step-tech">→ CAPsMAN · WDS · L2TP · OSPF</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURED PROJECT ── -->
+<section id="project" style="padding-top: 0;">
+  <div class="section-label">Featured Build</div>
+  <h2 class="section-title">AI-Powered IT Troubleshooting Assistant</h2>
+  <p class="section-sub">Small businesses lose an average of 1–4 hours per IT incident to Googling and trial-and-error. This tool cuts that to under 30 seconds — by putting a senior engineer's knowledge into an AI that anyone can query.</p>
+
+  <div class="project-featured fade-up">
+    <div class="project-featured-left">
+      <div class="project-badge"><i data-lucide="zap" style="width:12px;height:12px;stroke-width:1.5;"></i> Live Project · 2026</div>
+      <h3 class="project-title">Stop Googling.<br>Start Diagnosing.</h3>
+      <p class="project-desc">
+        The problem isn't that people don't know how to fix IT issues — it's that finding the right fix takes longer than the fix itself.
+        This tool flips that. Describe your problem in plain English ("my Linux VM won't start after a kernel update") and get back
+        a structured diagnosis: root cause, severity level, step-by-step fix, tools needed, and how to prevent it next time.
+        Built on Python + Flask + the Claude API. Deployable for free in under 10 minutes.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">Python 3.x</span>
+        <span class="stack-pill">Flask</span>
+        <span class="stack-pill">Claude API</span>
+        <span class="stack-pill">HTML/CSS/JS</span>
+        <span class="stack-pill">Render / Railway</span>
+      </div>
+      <div class="project-metrics">
+        <div class="metric">
+          <span class="metric-val">&lt;30s</span>
+          <span class="metric-label">Avg. Response</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">~50</span>
+          <span class="metric-label">Issues Catalogued</span>
+        </div>
+        <div class="metric">
+          <span class="metric-val">100%</span>
+          <span class="metric-label">Free to Deploy</span>
+        </div>
+      </div>
+      <div style="display:flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="#code" class="btn-primary">View Code Sample ↓</a>
+        <a href="#roadmap" class="btn-ghost">See Roadmap</a>
+      </div>
+    </div>
+    <div class="project-featured-right">
+      <div class="steps-title">// Implementation Roadmap</div>
+
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-name">Define the Problem Space</div>
+          <div class="step-desc">Map the 10 most common IT issues (boot failures, high CPU, network drops, permission errors). These become your test cases.</div>
+          <div class="step-tech">→ No code yet. Just a markdown doc.</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-name">Build the AI Brain</div>
+          <div class="step-desc">Write a system prompt that teaches Claude to act as a senior IT technician. Include structured output format (numbered steps, severity level, tools needed).</div>
+          <div class="step-tech">→ Python · anthropic SDK · prompt.txt</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-name">Wrap in a Flask API</div>
+          <div class="step-desc">Create a single POST endpoint /diagnose that accepts a JSON body with the issue description, calls Claude, and returns a structured JSON response.</div>
+          <div class="step-tech">→ Flask · app.py · /diagnose route</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-name">Add a Clean Frontend</div>
+          <div class="step-desc">A single HTML page with a textarea for the problem, a submit button, and a results panel that renders the AI steps clearly.</div>
+          <div class="step-tech">→ HTML · CSS · Vanilla JS fetch()</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <div class="step-name">Deploy & Document</div>
+          <div class="step-desc">Push to GitHub, deploy free on Render or Railway, write a README with screenshots. This is your portfolio entry.</div>
+          <div class="step-tech">→ GitHub · Render · README.md</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPGRADE ROADMAP -->
+  <div style="margin-top: 3rem;" id="roadmap">
+    <div class="section-label" style="margin-bottom: 1.5rem;">Upgrade Path</div>
+    <div class="projects-grid">
+      <div class="proj-card fade-up">
+        <div class="proj-num">v1</div>
+        <div class="proj-status active"><i data-lucide="check-circle-2" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Base Version</div>
+        <div class="proj-name">Core AI Diagnostic Engine</div>
+        <div class="proj-desc">Basic Flask API + Claude + HTML frontend. User types a problem, gets structured fix steps.</div>
+        <div class="proj-tech">
+          <span>Python</span><span>Flask</span><span>Claude API</span><span>HTML</span>
+        </div>
+      </div>
+      <div class="proj-card fade-up delay-1">
+        <div class="proj-num">v2</div>
+        <div class="proj-status wip"><i data-lucide="arrow-right" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Next Build</div>
+        <div class="proj-name">Issue History + Search</div>
+        <div class="proj-desc">Store all diagnosed issues in a SQLite database. Add search and filter by OS type, category, or severity.</div>
+        <div class="proj-tech">
+          <span>SQLite</span><span>SQLAlchemy</span><span>Search UI</span>
+        </div>
+      </div>
+      <div class="proj-card fade-up delay-2">
+        <div class="proj-num">v3</div>
+        <div class="proj-status planned"><i data-lucide="circle" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Future</div>
+        <div class="proj-name">Multi-System + IoT Support</div>
+        <div class="proj-desc">Add support for IoT device errors (Raspberry Pi, ESP32). Include a system info auto-detector that pre-fills context.</div>
+        <div class="proj-tech">
+          <span>IoT</span><span>psutil</span><span>Raspberry Pi</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-label">Who I Am</div>
+      <h2 class="section-title">The Rare Overlap</h2>
+      <div class="about-text">
+        <p>
+          There's a gap in most teams. The developers understand the system but not the business.
+          The strategists understand the goal but can't build toward it. I trained on both sides deliberately —
+          because <strong>the most valuable problems live exactly in that gap.</strong>
+        </p>
+        <p>
+          On the networking side, I've configured Cisco switches, built MikroTik router setups from the
+          ground up, designed VLAN architectures, deployed DHCP/DNS infrastructure, and secured networks
+          with firewall rules and VPNs. I've also traced kernel panics at 2am, debugged Odoo database
+          corruption, and researched why a product wasn't converting. That range isn't accidental —
+          it's the whole point. <strong>AI is now the third layer</strong>, letting me automate the
+          repetitive parts of all three worlds and move faster on what actually matters.
+        </p>
+        <p>
+          I don't build impressive-looking things that don't work. I build <strong>boring, reliable tools
+          that solve real problems</strong> — and I document them well enough that someone else can maintain them.
+        </p>
+      </div>
+      <div class="approach-cards">
+        <div class="approach-card">
+          <div class="approach-icon"><i data-lucide="target"></i></div>
+          <div>
+            <div class="approach-name">Diagnose Before Building</div>
+            <div class="approach-desc">Half of "technical problems" are actually process problems in disguise. I identify which is which before writing a single line of code.</div>
+          </div>
+        </div>
+        <div class="approach-card">
+          <div class="approach-icon"><i data-lucide="link-2"></i></div>
+          <div>
+            <div class="approach-name">Connect the Full Stack</div>
+            <div class="approach-desc">I design for how the whole system behaves — not just the feature in front of me. That means fewer surprises when things change.</div>
+          </div>
+        </div>
+        <div class="approach-card">
+          <div class="approach-icon"><i data-lucide="file-text"></i></div>
+          <div>
+            <div class="approach-name">Ship, Then Document</div>
+            <div class="approach-desc">Every project ends with a README, a write-up, or a walkthrough. Work that can't be explained can't be trusted — or hired for.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="skills">
+      <div class="section-label" style="margin-bottom: 2rem;">Technical Skills</div>
+      <div class="skills-section">
+
+        <div class="skill-category fade-up">
+          <div class="skill-cat-label">Core — use these daily</div>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">Windows / Linux Admin</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Network Engineering</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Prompt Engineering</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">IT Troubleshooting</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-category fade-up delay-1">
+          <div class="skill-cat-label">Familiar — build with these</div>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">Python</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">HTML / CSS / JS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Flask / APIs</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Cisco / MikroTik</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+            <div class="skill-row"><span class="skill-name">Odoo / ERP Systems</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-category fade-up delay-2">
+          <div class="skill-cat-label">Exploring — actively learning</div>
+          <div class="skill-bars">
+            <div class="skill-row"><span class="skill-name">AI / ML Workflows</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+            <div class="skill-row"><span class="skill-name">VLAN / Subnetting</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+            <div class="skill-row"><span class="skill-name">IoT & Edge Devices</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+            <div class="skill-row"><span class="skill-name">SQLite / Databases</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact" style="background: var(--surface); border-top: 1px solid var(--border);">
+  <div class="contact-wrap">
+    <div>
+      <div class="section-label">Let's Work Together</div>
+      <h2 class="section-title">Got a Problem<br>That Needs Both?</h2>
+      <p class="section-sub">If your challenge sits at the intersection of broken systems, unclear strategy, or untapped AI — that's exactly my territory. I'm not a generalist. I'm a specialist in the overlap.</p>
+
+      <div class="avail-box">
+        <div class="avail-head">Open for Work</div>
+        <p class="avail-text">
+          Available for IT consulting, AI tool builds, and digital strategy engagements.
+          Minimum engagement: 2 weeks. Remote-first, worldwide.
+          Typical first response within 24 hours.
+        </p>
+      </div>
+    </div>
+    <div>
+      <div class="section-label" style="margin-bottom: 2rem;">Reach Me On</div>
+      <div class="contact-links">
+        <a href="tel:0677667059" class="contact-link">
+          <span class="contact-link-label">Phone</span>
+          <span class="contact-link-val">0677667059</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="mailto:your@email.com" class="contact-link">
+          <span class="contact-link-label">Email</span>
+          <span class="contact-link-val">petercarlos897@gmail.com</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="https://github.com/yourhandle" target="_blank" class="contact-link">
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-val">github.com/yourhandle</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="https://linkedin.com/in/yourhandle" target="_blank" class="contact-link">
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-val">linkedin.com/in/yourhandle</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-label">Location</span>
+          <span class="contact-link-val">Remote — Worldwide</span>
+          <span class="contact-link-arrow">✓</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-copy">© 2026 Portfolio. All rights reserved.</div>
+  <div class="footer-made">Built with <span>intention</span> · Network Engineering × IT × Strategy × AI</div>
+</footer>  <script>
+  lucide.createIcons();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
