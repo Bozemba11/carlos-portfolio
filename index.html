@@ -56,72 +56,7 @@
   .nav-logo {
     font-family: var(--mono);
     font-size: 13px;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    text-transform: uppercase;
-  }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--subtle);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--text); }
-
-  /* ── 3D ICON STYLING ── */
-  .icon-3d {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--surface2), var(--surface));
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-    transition: all 0.25s ease;
-    color: var(--accent);
-  }
-  .icon-3d:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(224,123,48,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
-    border-color: rgba(224,123,48,0.3);
-  }
-  .icon-3d svg {
-    width: 18px;
-    height: 18px;
-    stroke-width: 1.5;
-  }
-  .icon-3d-sm {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    background: linear-gradient(135deg, var(--surface2), var(--surface));
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
-    transition: all 0.2s ease;
-    color: var(--accent);
-  }
-  .icon-3d-sm svg {
-    width: 14px;
-    height: 14px;
-    stroke-width: 1.5;
-  }
-  .icon-3d-sm:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(224,123,48,0.15);
-    border-color: rgba(224,123,48,0.25);
-  }
-  .icon-3d-lg {
-    display: inline-flex;
+    <!-- CODE SAMPLE removed by request -->
     align-items: center;
     justify-content: center;
     width: 48px;
@@ -142,6 +77,89 @@
     transform: translateY(-3px) scale(1.06);
     box-shadow: 0 8px 24px rgba(224,123,48,0.25);
     border-color: rgba(224,123,48,0.35);
+  }
+  .system-panel {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .system-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(224,123,48,0.08), transparent 38%);
+    pointer-events: none;
+  }
+  .system-panel-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .system-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .system-info-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .system-info-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    min-width: 110px;
+  }
+  .system-info-value {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.6;
+    word-break: break-word;
+  }
+  .system-console {
+    background: rgba(0, 0, 0, 0.16);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 1.5rem;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .system-console-line {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--subtle);
+  }
+  .system-console-line span:first-child {
+    color: var(--accent);
+    min-width: 90px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .system-console-line span:last-child {
+    color: var(--text);
+  }
+  @media (max-width: 1024px) {
+    .system-panel { margin: 2rem 2rem 0; }
+    .system-panel-content { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .system-panel { padding: 1.5rem 1rem; }
+    .system-info-label { min-width: auto; }
   }
   .icon-inline {
     display: inline-flex;
@@ -471,6 +489,17 @@
     margin-bottom: 4rem;
     font-size: 1rem;
     line-height: 1.8;
+  }
+
+  .feature-list {
+    list-style: disc inside;
+    color: var(--subtle);
+    margin: 1rem 0 0;
+    padding-left: 1rem;
+  }
+  .feature-list li {
+    margin-bottom: 0.85rem;
+    line-height: 1.75;
   }
 
   /* ── SERVICES ── */
@@ -1035,8 +1064,6 @@
     .hero-right { display: none; }
     .hero-left { padding: 4rem 2rem; }
     .services-grid { grid-template-columns: 1fr 1fr; }
-    #network .project-featured { grid-template-columns: 1fr; }
-    #network .project-featured-right { border-left: none; border-top: 1px solid var(--border); }
     .project-featured { grid-template-columns: 1fr; }
     .project-featured-right { border-left: none; border-top: 1px solid var(--border); }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -1072,6 +1099,7 @@
     .contact-link-label { font-size: 11px; }
     .contact-link-val { font-size: 11px; }
     .avail-box { padding: 1.5rem; }
+    .avail-text { font-size: 0.9rem; }
     footer { padding: 1.5rem 1.25rem; }
     .code-body { font-size: 11px; padding: 1rem; }
     .code-body pre { white-space: pre; overflow-x: auto; }
@@ -1136,7 +1164,7 @@
 <nav>
   <div class="nav-logo">[ Portfolio.v1 ]</div>
   <ul class="nav-links">
-    <li><a    href="#services">Services</a></li>
+    <li><a href="#services">Services</a></li>
     <li><a href="#network">Network</a></li>
     <li><a href="#project">Project</a></li>
     <li><a href="#about">About</a></li>
@@ -1164,21 +1192,20 @@
 <!-- ── HERO ── -->
 <section class="hero" id="home">
   <div class="hero-left">
-    <div class="hero-tag">Carlos Peter</div>
+    <div class="hero-tag">AVAILABLE FOR PROJECTS · DAR ES SALAAM, TANZANIA</div>
     <h1 class="hero-title">
-      Network Engineer<br>
-      IT Support Specialist<br>
-      <em>AI Solutions Developer</em>
+      Most IT professionals fix problems.<br>
+      I fix them — then build <span style="color: var(--accent);">AI-powered systems</span> so they don't come back.
     </h1>
     <p class="hero-sub">
-      "Building reliable networks, solving complex IT problems, and creating practical AI-powered solutions."
+      Downtime costs money. Slow troubleshooting costs more. I help organizations reduce both — by building reliable network infrastructure and the intelligent tools to keep it running without depending on a full IT department.
     </p>
     <p class="hero-sub" style="max-width: 520px; font-size: 0.95rem;">
-      Most professionals specialize in one area. I work across networking, systems administration, IT support, and AI-powered automation to help organizations operate more efficiently. From configuring secure network infrastructure to developing intelligent troubleshooting tools, I focus on solutions that are practical, scalable, and easy to maintain.
+      From configuring Cisco and MikroTik infrastructure to deploying full-stack platforms, I work across the full technical stack to deliver solutions that last.
     </p>
     <div class="hero-actions">
-      <a href="#project" class="btn-primary">View Projects</a>
-      <a href="#contact" class="btn-ghost">Contact Me</a>
+      <a href="#project" class="btn-primary">View featured project</a>
+      <a href="#contact" class="btn-ghost">Get in touch</a>
     </div>
     <div class="hero-stats">
       <div>
@@ -1221,10 +1248,45 @@
   </div>
 </section>
 
+<section id="system">
+  <div class="section-label">System Info</div>
+  <h2 class="section-title">Browser & Device System</h2>
+  <p class="section-sub">This page detects your browser and device system data and displays it directly in the web interface.</p>
+  <div class="system-panel fade-up">
+    <div class="system-panel-content">
+      <div class="system-info">
+        <div class="system-info-item">
+          <div class="system-info-label">Platform</div>
+          <div id="system-platform" class="system-info-value">Loading...</div>
+        </div>
+        <div class="system-info-item">
+          <div class="system-info-label">User Agent</div>
+          <div id="system-useragent" class="system-info-value">Loading...</div>
+        </div>
+        <div class="system-info-item">
+          <div class="system-info-label">Language</div>
+          <div id="system-language" class="system-info-value">Loading...</div>
+        </div>
+        <div class="system-info-item">
+          <div class="system-info-label">Hardware</div>
+          <div id="system-hardware" class="system-info-value">Loading...</div>
+        </div>
+      </div>
+      <div class="system-console">
+        <div class="system-console-line"><span>OS</span><span id="system-os">Loading...</span></div>
+        <div class="system-console-line"><span>Browser</span><span id="system-browser">Loading...</span></div>
+        <div class="system-console-line"><span>Screen</span><span id="system-screen">Loading...</span></div>
+        <div class="system-console-line"><span>Cookies</span><span id="system-cookies">Loading...</span></div>
+        <div class="system-console-line"><span>Connection</span><span id="system-connection">Loading...</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── SERVICES ── -->
 <section id="services">
   <div class="section-label">What I Do</div>
-  <h2 class="section-title">Specialized Solutions Across Domains</h2>
+  <h2 class="section-title">What I Do</h2>
   <p class="section-sub">Most professionals specialize in one area. I work across networking, systems administration, IT support, and AI-powered automation to help organizations operate more efficiently.</p>
   <div class="services-grid">
     <div class="service-card fade-up">
@@ -1282,12 +1344,20 @@
 
   <div class="project-featured fade-up">
     <div class="project-featured-left">
-      <div class="project-badge"><i data-lucide="network" style="width:12px;height:12px;stroke-width:1.5;"></i> Core Competencies</div>
-      <h3 class="project-title">Routing · Switching ·<br>Security · Wireless</h3>
-      <p class="project-desc">
-        My experience includes: VLAN design and segmentation, inter-VLAN routing, router and switch configuration, firewall implementation, DHCP and DNS deployment, VPN configuration, wireless network deployment, and network monitoring and troubleshooting.
-      </p>
-      <div class="project-stack">
+      <div class="project-badge"><i data-lucide="network" style="width:12px;height:12px;stroke-width:1.5;"></i> Network Experience</div>
+      <h3 class="project-title">Network Engineering & Infrastructure</h3>
+      <p class="project-desc">My experience includes:</p>
+      <ul class="feature-list">
+        <li>VLAN design and segmentation</li>
+        <li>Inter-VLAN routing</li>
+        <li>Router and switch configuration</li>
+        <li>Firewall implementation</li>
+        <li>DHCP and DNS deployment</li>
+        <li>VPN configuration</li>
+        <li>Wireless network deployment</li>
+        <li>Network monitoring and troubleshooting</li>
+      </ul>
+      <div class="project-stack" style="margin-top: 1.5rem;">
         <span class="stack-pill">Cisco IOS</span>
         <span class="stack-pill">MikroTik RouterOS</span>
         <span class="stack-pill">Linux Networking</span>
@@ -1296,234 +1366,18 @@
         <span class="stack-pill">VPN Technologies</span>
         <span class="stack-pill">Wireshark & Network Diagnostics</span>
       </div>
-      <div class="project-metrics">
-        <div class="metric">
-          <span class="metric-val">10+</span>
-          <span class="metric-label">Networks Configured</span>
-        </div>
-        <div class="metric">
-          <span class="metric-val">5</span>
-          <span class="metric-label">Sites Designed</span>
-        </div>
-        <div class="metric">
-          <span class="metric-val">99.9%</span>
-          <span class="metric-label">Uptime Target</span>
-        </div>
-      </div>
     </div>
     <div class="project-featured-right">
-      <div class="steps-title">// Core Technologies</div>
-
-      <div class="step-item">
-        <div class="step-num">01</div>
-        <div class="step-content">
-          <div class="step-name">VLAN Design & Segmentation</div>
-          <div class="step-desc">Analyze traffic patterns, design VLAN topology, assign subnets, and configure inter-VLAN routing with access control lists between segments.</div>
-          <div class="step-tech">→ Cisco · MikroTik · Subnetting · VLSM</div>
-        </div>
-      </div>
-
-      <div class="step-item">
-        <div class="step-num">02</div>
-        <div class="step-content">
-          <div class="step-name">Router & Switch Configuration</div>
-          <div class="step-desc">Set up static/dynamic routing, NAT/PAT, port forwarding, firewall rules, and site-to-site VPNs. Hardening against common attack vectors included.</div>
-          <div class="step-tech">→ RouterOS · iptables · IPSec · WireGuard</div>
-        </div>
-      </div>
-
-      <div class="step-item">
-        <div class="step-num">03</div>
-        <div class="step-content">
-          <div class="step-name">DHCP & DNS Services</div>
-          <div class="step-desc">Deploy and manage DHCP servers (failover pools, reservations), DNS forwarders and caching resolvers, and NTP synchronization across the network.</div>
-          <div class="step-tech">→ Linux · dnsmasq · bind9 · dhcpd</div>
-        </div>
-      </div>
-
-      <div class="step-item">
-        <div class="step-num">04</div>
-        <div class="step-content">
-          <div class="step-name">Firewall & NAT Configuration</div>
-          <div class="step-desc">Implement firewall rules, NAT/PAT translation, and VPN tunnels to secure network perimeter and enable remote access.</div>
-          <div class="step-tech">→ Cisco IOS · MikroTik · iptables</div>
-        </div>
-      </div>
-
-      <div class="step-item">
-        <div class="step-num">05</div>
-        <div class="step-content">
-          <div class="step-name">Network Monitoring & Troubleshooting</div>
-          <div class="step-desc">Identify root causes of network drops, high latency, packet loss, and bandwidth saturation using Wireshark, ping, traceroute, and interface statistics.</div>
-          <div class="step-tech">→ Wireshark · MTR · SNMP · syslog</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── FEATURED PROJECT ── -->
-<section id="project" style="padding-top: 0;">
-  <div class="section-label">Featured Build</div>
-  <h2 class="section-title">AI-Powered IT Troubleshooting Assistant</h2>
-  <p class="section-sub">An intelligent troubleshooting platform designed to help users diagnose common IT issues quickly and accurately.</p>
-
-  <div class="project-featured fade-up">
-    <div class="project-featured-left">
-      <div class="project-badge"><i data-lucide="zap" style="width:12px;height:12px;stroke-width:1.5;"></i> Live Project · 2026</div>
-      <h3 class="project-title">AI-Powered IT Troubleshooting Assistant</h3>
-      <p class="project-desc">
-        Users describe a technical problem in plain language, and the system generates likely root causes, severity assessment, recommended troubleshooting steps, required tools and commands, and preventive recommendations.
-      </p>
-      <p class="project-desc">
-        The goal is to reduce troubleshooting time and improve access to technical knowledge for IT teams and end users.
-      </p>
-      <div class="project-stack">
-        <span class="stack-pill">Python</span>
-        <span class="stack-pill">Flask</span>
-        <span class="stack-pill">Claude API</span>
-        <span class="stack-pill">HTML/CSS/JS</span>
-        <span class="stack-pill">SQLite (Planned)</span>
-        <span class="stack-pill">Render Deployment</span>
-      </div>
-      <div class="project-metrics">
-        <div class="metric">
-          <span class="metric-val">&lt;30s</span>
-          <span class="metric-label">Avg. Response</span>
-        </div>
-        <div class="metric">
-          <span class="metric-val">~50</span>
-          <span class="metric-label">Issues Catalogued</span>
-        </div>
-        <div class="metric">
-          <span class="metric-val">100%</span>
-          <span class="metric-label">Free to Deploy</span>
-        </div>
-      </div>
-      <div style="display:flex; gap: 1rem; flex-wrap: wrap;">
-        <a href="#code" class="btn-primary">View Code Sample ↓</a>
-        <a href="#roadmap" class="btn-ghost">See Roadmap</a>
-      </div>
-    </div>
-    <div class="project-featured-right">
-      <div class="steps-title">// Planned Enhancements</div>
-
-      <div class="step-item">
-        <div class="step-num">V2</div>
-        <div class="step-content">
-          <div class="step-name">Version 2</div>
-          <div class="step-desc">Issue history, search functionality, user authentication, analytics dashboard.</div>
-        </div>
-      </div>
-
-      <div class="step-item">
-        <div class="step-num">V3</div>
-        <div class="step-content">
-          <div class="step-name">Version 3</div>
-          <div class="step-desc">IoT diagnostics, system information collection, multi-device support.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CODE SAMPLE -->
-  <div class="code-section fade-up" id="code">
-    <div class="code-header">
-      <div class="code-dots">
-        <div class="dot dot-red"></div>
-        <div class="dot dot-yellow"></div>
-        <div class="dot dot-green"></div>
-      </div>
-      <div class="code-title">app.py — Flask Backend (Core Logic)</div>
-      <div style="font-family: var(--mono); font-size: 10px; color: var(--muted);">Python 3.x</div>
-    </div>
-    <div class="code-body">
-<pre><span class="cm"># app.py — AI IT Troubleshooting Assistant</span>
-<span class="cm"># Step 1: Install deps → pip install flask anthropic python-dotenv</span>
-
-<span class="kw">import</span> anthropic
-<span class="kw">from</span> flask <span class="kw">import</span> Flask, request, jsonify
-<span class="kw">from</span> dotenv <span class="kw">import</span> load_dotenv
-<span class="kw">import</span> os
-
-load_dotenv()                         <span class="cm"># Load ANTHROPIC_API_KEY from .env</span>
-app = Flask(__name__)
-client = anthropic.<span class="fn">Anthropic</span>()       <span class="cm"># Auto-reads ANTHROPIC_API_KEY</span>
-
-<span class="cm"># The "brain" — system prompt defines how the AI behaves</span>
-SYSTEM_PROMPT = <span class="st">"""
-You are a senior IT systems engineer with 10+ years of experience.
-When given an IT problem, respond with:
-1. ROOT CAUSE: What is most likely causing this
-2. SEVERITY: Low / Medium / High
-3. STEPS: Numbered list of diagnostic/fix steps (clear, beginner-friendly)
-4. TOOLS NEEDED: Any commands, software, or access required
-5. PREVENTION: How to avoid this in future
-Keep responses structured and practical. No jargon without explanation.
-"""</span>
-
-<span class="kw">@</span>app.<span class="fn">route</span>(<span class="st">'/diagnose'</span>, methods=[<span class="st">'POST'</span>])
-<span class="kw">def</span> <span class="fn">diagnose</span>():
-    data = request.<span class="fn">get_json</span>()
-    issue = data.<span class="fn">get</span>(<span class="st">'issue'</span>, <span class="st">''</span>)
-
-    <span class="kw">if not</span> issue:
-        <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="st">'error'</span>: <span class="st">'No issue provided'</span>}), <span class="num">400</span>
-
-    <span class="cm"># Call Claude — this is the key step</span>
-    message = client.messages.<span class="fn">create</span>(
-        model=<span class="st">"claude-opus-4-6"</span>,
-        max_tokens=<span class="num">1024</span>,
-        system=SYSTEM_PROMPT,
-        messages=[{
-            <span class="st">"role"</span>: <span class="st">"user"</span>,
-            <span class="st">"content"</span>: <span class="fn">f</span><span class="st">"IT Problem: {issue}"</span>
-        }]
-    )
-
-    <span class="kw">return</span> <span class="fn">jsonify</span>({
-        <span class="st">'issue'</span>: issue,
-        <span class="st">'diagnosis'</span>: message.content[<span class="num">0</span>].text,
-        <span class="st">'model'</span>: message.model,
-        <span class="st">'tokens_used'</span>: message.usage.input_tokens + message.usage.output_tokens
-    })
-
-<span class="kw">if</span> __name__ == <span class="st">'__main__'</span>:
-    app.<span class="fn">run</span>(debug=<span class="kw">True</span>)     <span class="cm"># Visit http://localhost:5000</span></pre>
-    </div>
-  </div>
-
-  <!-- UPGRADE ROADMAP -->
-  <div style="margin-top: 3rem;" id="roadmap">
-    <div class="section-label" style="margin-bottom: 1.5rem;">Upgrade Path</div>
-    <div class="projects-grid">
-      <div class="proj-card fade-up">
-        <div class="proj-num">v1</div>
-        <div class="proj-status active"><i data-lucide="check-circle-2" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Base Version</div>
-        <div class="proj-name">Core AI Diagnostic Engine</div>
-        <div class="proj-desc">Basic Flask API + Claude + HTML frontend. User types a problem, gets structured fix steps.</div>
-        <div class="proj-tech">
-          <span>Python</span><span>Flask</span><span>Claude API</span><span>HTML</span>
-        </div>
-      </div>
-      <div class="proj-card fade-up delay-1">
-        <div class="proj-num">v2</div>
-        <div class="proj-status wip"><i data-lucide="arrow-right" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Next Build</div>
-        <div class="proj-name">Issue History + Search</div>
-        <div class="proj-desc">Store all diagnosed issues in a SQLite database. Add search and filter by OS type, category, or severity.</div>
-        <div class="proj-tech">
-          <span>SQLite</span><span>SQLAlchemy</span><span>Search UI</span>
-        </div>
-      </div>
-      <div class="proj-card fade-up delay-2">
-        <div class="proj-num">v3</div>
-        <div class="proj-status planned"><i data-lucide="circle" style="width:10px;height:10px;display:inline-block;vertical-align:middle;margin-right:2px;"></i> Future</div>
-        <div class="proj-name">Multi-System + IoT Support</div>
-        <div class="proj-desc">Add support for IoT device errors (Raspberry Pi, ESP32). Include a system info auto-detector that pre-fills context.</div>
-        <div class="proj-tech">
-          <span>IoT</span><span>psutil</span><span>Raspberry Pi</span>
-        </div>
-      </div>
+      <div class="steps-title">Core Technologies</div>
+      <ul class="feature-list">
+        <li>Cisco IOS</li>
+        <li>MikroTik RouterOS</li>
+        <li>Linux Networking</li>
+        <li>DHCP & DNS Services</li>
+        <li>Firewall & NAT Configuration</li>
+        <li>VPN Technologies</li>
+        <li>Wireshark & Network Diagnostics</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -1575,49 +1429,49 @@ Keep responses structured and practical. No jargon without explanation.
 
         <div class="skill-category fade-up">
           <div class="skill-cat-label">Networking</div>
-          <div class="skill-bars">
-            <div class="skill-row"><span class="skill-name">Cisco IOS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">MikroTik RouterOS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">VLAN Configuration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">Routing & Switching</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">DHCP & DNS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">VPN Technologies</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">Firewall Administration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">Network Troubleshooting</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-          </div>
+          <ul class="feature-list">
+            <li>Cisco IOS</li>
+            <li>MikroTik RouterOS</li>
+            <li>VLAN Configuration</li>
+            <li>Routing & Switching</li>
+            <li>DHCP & DNS</li>
+            <li>VPN Technologies</li>
+            <li>Firewall Administration</li>
+            <li>Network Troubleshooting</li>
+          </ul>
         </div>
 
         <div class="skill-category fade-up delay-1">
           <div class="skill-cat-label">Systems Administration</div>
-          <div class="skill-bars">
-            <div class="skill-row"><span class="skill-name">Windows Administration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">Linux Administration</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">Virtualization (VirtualBox)</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">System Monitoring</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">User Management</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-          </div>
+          <ul class="feature-list">
+            <li>Windows Administration</li>
+            <li>Linux Administration</li>
+            <li>Virtualization (VirtualBox)</li>
+            <li>System Monitoring</li>
+            <li>User Management</li>
+          </ul>
         </div>
 
         <div class="skill-category fade-up delay-2">
           <div class="skill-cat-label">Development & Automation</div>
-          <div class="skill-bars">
-            <div class="skill-row"><span class="skill-name">Python</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">Flask</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">HTML / CSS</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">JavaScript</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">REST APIs</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-            <div class="skill-row"><span class="skill-name">SQLite</span><div class="skill-bar"><div class="skill-fill" style="width:100%"></div></div></div>
-          </div>
+          <ul class="feature-list">
+            <li>Python</li>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+            <li>REST APIs</li>
+            <li>SQLite</li>
+          </ul>
         </div>
 
         <div class="skill-category fade-up delay-3">
           <div class="skill-cat-label">AI & Productivity</div>
-          <div class="skill-bars">
-            <div class="skill-row"><span class="skill-name">Prompt Engineering</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
-            <div class="skill-row"><span class="skill-name">AI Workflow Automation</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
-            <div class="skill-row"><span class="skill-name">AI-Assisted Troubleshooting</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
-            <div class="skill-row"><span class="skill-name">API Integration</span><div class="skill-bar"><div class="skill-fill" style="width:100%; background: rgba(224,123,48,0.4)"></div></div></div>
-          </div>
+          <ul class="feature-list">
+            <li>Prompt Engineering</li>
+            <li>AI Workflow Automation</li>
+            <li>AI-Assisted Troubleshooting</li>
+            <li>API Integration</li>
+          </ul>
         </div>
 
       </div>
@@ -1636,9 +1490,7 @@ Keep responses structured and practical. No jargon without explanation.
       <div class="avail-box">
         <div class="avail-head">Open for Work</div>
         <p class="avail-text">
-          Available for network infrastructure, IT support, systems integration, and AI-powered solutions.
-          Remote-first, worldwide.
-          Typical first response within 24 hours.
+          Available for network infrastructure, IT support, systems integration, and AI-powered solutions. Remote-first, worldwide. Typical first response within 24 hours.
         </p>
       </div>
     </div>
@@ -1679,7 +1531,8 @@ Keep responses structured and practical. No jargon without explanation.
 <footer>
   <div class="footer-copy">© 2026 Portfolio. All rights reserved.</div>
   <div class="footer-made">Built with <span>intention</span> · Network Engineering × IT × Strategy × AI</div>
-</footer>  <script>
+</footer>
+<script>
   function closeMobileMenu() {
     document.querySelector('.nav-mobile').classList.remove('active');
     document.querySelector('.nav-hamburger').classList.remove('active');
@@ -1688,6 +1541,35 @@ Keep responses structured and practical. No jargon without explanation.
     document.querySelector('.nav-mobile').classList.toggle('active');
     document.querySelector('.nav-hamburger').classList.toggle('active');
   }
+  function renderSystemInfo() {
+    const ua = navigator.userAgent || 'Unknown';
+    const platform = navigator.userAgentData?.platform || navigator.platform || 'Unknown';
+    const language = navigator.language || navigator.userLanguage || 'Unknown';
+    const hardware = navigator.hardwareConcurrency ? navigator.hardwareConcurrency + ' cores' : 'Unknown';
+    const os = navigator.userAgentData?.platform || navigator.platform || 'Unknown';
+    const browser = (() => {
+      if (ua.includes('Firefox/')) return 'Firefox';
+      if (ua.includes('Edg/')) return 'Microsoft Edge';
+      if (ua.includes('Chrome/') && !ua.includes('Edg/')) return 'Chrome';
+      if (ua.includes('Safari/') && !ua.includes('Chrome/')) return 'Safari';
+      if (ua.includes('Opera/') || ua.includes('OPR/')) return 'Opera';
+      return 'Unknown';
+    })();
+    const screenInfo = `${window.screen.width}×${window.screen.height} (${window.devicePixelRatio || 1}x)`;
+    const cookies = navigator.cookieEnabled ? 'Enabled' : 'Disabled';
+    const connection = navigator.connection ? `${navigator.connection.effectiveType || 'N/A'} (${navigator.connection.downlink || 'N/A'} Mbps)` : 'Unknown';
+
+    document.getElementById('system-platform').textContent = platform;
+    document.getElementById('system-useragent').textContent = ua;
+    document.getElementById('system-language').textContent = language;
+    document.getElementById('system-hardware').textContent = hardware;
+    document.getElementById('system-os').textContent = os;
+    document.getElementById('system-browser').textContent = browser;
+    document.getElementById('system-screen').textContent = screenInfo;
+    document.getElementById('system-cookies').textContent = cookies;
+    document.getElementById('system-connection').textContent = connection;
+  }
+  window.addEventListener('load', renderSystemInfo);
   lucide.createIcons();
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
